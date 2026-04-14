@@ -1,0 +1,48 @@
+@model QuanLyGara.Models.Xe
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Xe</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SoKhungSoMay)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SoKhungSoMay)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HangXe)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HangXe)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DongXe)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DongXe)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.GiaBan)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.GiaBan)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DaBan)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DaBan)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

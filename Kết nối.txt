@@ -1,0 +1,1 @@
+ Scaffold-DbContext "Server=LUU\MSSQLSERVER03;Database=QuanLyGara;Trusted_Connection=True;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Context ApplicationDbContext
