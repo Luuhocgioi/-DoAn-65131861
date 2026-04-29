@@ -1,51 +1,238 @@
 @model QuanLyGara.Models.Xe
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Xóa Hồ Sơ Xe";
 }
 
-<h1>Delete</h1>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Xe</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoKhungSoMay)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoKhungSoMay)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HangXe)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HangXe)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DongXe)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DongXe)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.GiaBan)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.GiaBan)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DaBan)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DaBan)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+<style>
+    :root {
+        --primary-color: #2b2d42;
+        --accent-color: #ef233c;
+        --bg-color: #f4f6f9;
+        --text-color: #8d97ad;
+        --danger-color: #d90429; /* Đỏ cực đậm cho hành động Xóa */
+    }
+
+    .delete-container {
+        font-family: 'Outfit', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 15px;
+    }
+
+    /* Thẻ cảnh báo trung tâm */
+    .warning-card {
+        background: #ffffff;
+        border-radius: 24px;
+        box-shadow: 0 15px 35px rgba(239, 35, 60, 0.08);
+        border: 1px solid rgba(239, 35, 60, 0.1);
+        width: 100%;
+        max-width: 550px;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    .warning-header {
+        background: rgba(239, 35, 60, 0.05);
+        padding: 30px 20px 20px;
+        border-bottom: 2px dashed rgba(239, 35, 60, 0.2);
+    }
+
+    /* Hiệu ứng nhịp đập (Pulse) cảnh báo */
+    .warning-icon {
+        font-size: 4rem;
+        color: var(--accent-color);
+        margin-bottom: 10px;
+        animation: pulse 2s infinite;
+    }
+
+    /* Đã thêm @@ để Razor không bị nhầm lẫn */
+    @@keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.1);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .warning-title {
+        color: var(--primary-color);
+        font-weight: 900;
+        font-size: 1.8rem;
+        margin-bottom: 5px;
+    }
+
+    .warning-subtitle {
+        color: var(--accent-color);
+        font-weight: 600;
+        font-size: 1rem;
+    }
+
+    /* Vùng hiển thị thông tin xe sắp bị xóa */
+    .car-preview {
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .preview-img {
+        width: 180px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(43, 45, 66, 0.15);
+        margin-bottom: 20px;
+        border: 3px solid #fff;
+    }
+
+    .car-info-box {
+        background: var(--bg-color);
+        border-radius: 16px;
+        padding: 20px;
+        width: 100%;
+        text-align: left;
+    }
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(43, 45, 66, 0.05);
+    }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+    .info-label {
+        color: var(--text-color);
+        font-weight: 500;
+        font-size: 0.95rem;
+    }
+
+    .info-value {
+        color: var(--primary-color);
+        font-weight: 700;
+        font-size: 1rem;
+    }
+
+    /* Nhóm nút hành động */
+    .action-footer {
+        padding: 10px 30px 30px;
+        display: flex;
+        gap: 15px;
+    }
+
+    .btn-cancel {
+        flex: 1;
+        background: var(--bg-color);
+        color: var(--primary-color);
+        border: none;
+        padding: 14px;
+        border-radius: 12px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+        .btn-cancel:hover {
+            background: #e2e8f0;
+            color: var(--primary-color);
+        }
+
+    .btn-confirm-delete {
+        flex: 1;
+        background: var(--accent-color);
+        color: #fff;
+        border: none;
+        padding: 14px;
+        border-radius: 12px;
+        font-weight: 700;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 8px 20px rgba(239, 35, 60, 0.3);
+        cursor: pointer;
+    }
+
+        .btn-confirm-delete:hover {
+            background: var(--danger-color);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(239, 35, 60, 0.4);
+        }
+</style>
+
+<div class="delete-container">
+    <div class="warning-card">
+        <div class="warning-header">
+            <i class='bx bx-error-circle warning-icon'></i>
+            <h2 class="warning-title">XÁC NHẬN XÓA</h2>
+            <p class="warning-subtitle">Hành động này không thể hoàn tác!</p>
+        </div>
+
+        <div class="car-preview">
+            @if (Model.HinhAnhXes != null && Model.HinhAnhXes.Any())
+            {
+                // Đã Fix an toàn lỗi bool? == true
+                var anhChinh = Model.HinhAnhXes.FirstOrDefault(a => a.LaAnhChinh == true) ?? Model.HinhAnhXes.First();
+                <img src="@anhChinh.DuongDanAnh" class="preview-img" alt="@Model.DongXe" />
+            }
+            else
+            {
+                <div class="preview-img d-flex align-items-center justify-content-center" style="background: var(--primary-color); color: #fff;">
+                    <i class='bx bx-image-alt' style="font-size: 3rem;"></i>
+                </div>
+            }
+
+            <div class="car-info-box">
+                <div class="info-row">
+                    <span class="info-label">Thương hiệu</span>
+                    <span class="info-value text-uppercase" style="color: var(--accent-color);">@Model.HangXe</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Dòng xe</span>
+                    <span class="info-value" style="font-size: 1.2rem;">@Model.DongXe</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Mã VIN (Số Khung)</span>
+                    <span class="info-value" style="font-family: monospace;">@Model.SoKhungSoMay</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Trạng thái hiện tại</span>
+                    <span class="info-value">
+                        @(Model.DaBan == true ? "Đã bàn giao" : "Sẵn sàng")
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <form asp-action="Delete" class="action-footer">
+            <input type="hidden" asp-for="Id" />
+
+            <a asp-action="Index" class="btn-cancel">
+                <i class='bx bx-arrow-back'></i> Hủy & Quay lại
+            </a>
+
+            <button type="submit" class="btn-confirm-delete">
+                <i class='bx bxs-trash-alt'></i> Xóa Vĩnh Viễn
+            </button>
+        </form>
+    </div>
 </div>

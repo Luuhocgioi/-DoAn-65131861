@@ -1,8 +1,36 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Trang Chủ";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    /* Bố cục Typography khổng lồ như Gravity Global */
+    .hero-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: calc(100vh - 200px); /* Canh giữa màn hình */
+        max-width: 850px;
+    }
+
+    .hero-title {
+        font-size: 5.5rem; /* Cỡ chữ siêu to */
+        font-weight: 500;
+        line-height: 1.1;
+        color: var(--accent-color); /* Chữ màu Đỏ thể thao */
+        margin-bottom: 25px;
+        letter-spacing: -2px;
+    }
+
+    .hero-subtitle {
+        font-size: 1.25rem;
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.6;
+        max-width: 650px;
+        font-weight: 300;
+    }
+</style>
+
+<div class="hero-section">
+    <h1 class="hero-title">Quản Lý Đột Phá.<br>Bứt Tốc Doanh Thu.</h1>
+    <p class="hero-subtitle">Là nền tảng quản lý Gara ô tô tối ưu nhất, AutoPro giúp các doanh nghiệp tinh anh khai phóng sức mạnh dữ liệu và sự sáng tạo để châm ngòi cho sự tăng trưởng.</p>
 </div>

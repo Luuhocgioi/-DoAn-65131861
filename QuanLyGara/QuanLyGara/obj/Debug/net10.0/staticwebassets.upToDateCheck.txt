@@ -1,5 +1,8 @@
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\3675f333-026a-4b3b-820f-25941551e992_pexels-mohit-hambiria-92377455-31340474.jpg
+wwwroot\images\d4e91737-b7ed-4904-9da4-b9c55f2511f2_pexels-mohit-hambiria-92377455-31340476.jpg
+wwwroot\images\ea6c33ab-daba-44b2-a1fb-5a4ce2e86ead_pexels-mohit-hambiria-92377455-31340475.jpg
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map

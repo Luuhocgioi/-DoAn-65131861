@@ -1,41 +1,254 @@
 @model QuanLyGara.Models.DonHang
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Lập Hợp Đồng Mới";
 }
 
-<h1>Create</h1>
+<style>
+    :root {
+        --primary-color: #2b2d42;
+        --accent-color: #ef233c;
+        --bg-color: #0f1115;
+    }
 
-<h4>DonHang</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+    .contract-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 0;
+    }
+
+    /* Bảng điều khiển kính mờ */
+    .glass-console {
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 24px;
+        padding: 40px;
+        width: 100%;
+        max-width: 700px;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    }
+
+    .console-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .console-icon {
+        font-size: 3.5rem;
+        color: var(--accent-color);
+        margin-bottom: 10px;
+        filter: drop-shadow(0 0 10px rgba(239, 35, 60, 0.5));
+    }
+
+    .console-title {
+        font-size: 2rem;
+        font-weight: 900;
+        color: #fff;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin: 0;
+    }
+
+    .console-subtitle {
+        color: #8d97ad;
+        font-size: 0.95rem;
+        margin-top: 5px;
+    }
+
+    /* Tùy chỉnh các ô nhập liệu (Inputs & Selects) */
+    .custom-input-group {
+        margin-bottom: 25px;
+        position: relative;
+    }
+
+    .custom-label {
+        color: #8d97ad;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 15px;
+        font-size: 1.3rem;
+        color: var(--accent-color);
+        pointer-events: none;
+    }
+
+    /* Định dạng chung cho Input và Dropdown */
+    .glass-input {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 14px 15px 14px 45px; /* Chừa chỗ cho icon bên trái */
+        color: #ffffff;
+        font-size: 1.1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+        .glass-input:focus {
+            outline: none;
+            background: rgba(0, 0, 0, 0.4);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(239, 35, 60, 0.2);
+        }
+
+    /* Sửa lỗi giao diện Dropdown (Select) nền trắng mặc định của hệ điều hành */
+    select.glass-input option {
+        background: var(--bg-color);
+        color: #ffffff;
+        padding: 10px;
+    }
+
+    /* Đặc quyền cho ô Nhập giá chốt */
+    .price-input {
+        font-size: 1.5rem !important;
+        font-weight: 800;
+        color: #00f2fe !important; /* Giá tiền nổi lên màu xanh Cyan */
+        letter-spacing: 1px;
+    }
+
+    /* Nhóm nút Action */
+    .action-footer {
+        display: flex;
+        gap: 20px;
+        margin-top: 40px;
+        padding-top: 30px;
+        border-top: 1px dashed rgba(255,255,255,0.1);
+    }
+
+    .btn-back-glass {
+        flex: 1;
+        background: rgba(255,255,255,0.05);
+        color: #fff;
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 14px;
+        border-radius: 12px;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+        .btn-back-glass:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            transform: translateX(-3px);
+        }
+
+    .btn-submit-neon {
+        flex: 2;
+        background: var(--accent-color);
+        color: #fff;
+        border: none;
+        padding: 14px;
+        border-radius: 12px;
+        font-weight: 800;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 8px 25px rgba(239, 35, 60, 0.4);
+        cursor: pointer;
+    }
+
+        .btn-submit-neon:hover {
+            background: #d90429;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(239, 35, 60, 0.6);
+        }
+</style>
+
+<div class="contract-wrapper">
+    <div class="glass-console">
+
+        <div class="console-header">
+            <i class='bx bxs-file-export console-icon'></i>
+            <h2 class="console-title">KHỞI TẠO HỢP ĐỒNG</h2>
+            <p class="console-subtitle">Hệ thống ghi nhận giao dịch & xuất xe</p>
+        </div>
+
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="GiaChot" class="control-label"></label>
-                <input asp-for="GiaChot" class="form-control" />
-                <span asp-validation-for="GiaChot" class="text-danger"></span>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3" style="font-size: 0.9rem;"></div>
+
+            <div class="row">
+                <div class="col-md-6 custom-input-group">
+                    <label asp-for="NhanVienId" class="custom-label">Nhân Viên Phụ Trách</label>
+                    <div class="input-wrapper">
+                        <i class='bx bxs-user-badge input-icon'></i>
+                        <select asp-for="NhanVienId" class="glass-input" asp-items="ViewBag.NhanVienId">
+                            <option value="">-- Chọn nhân viên --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-6 custom-input-group">
+                    <label asp-for="XeId" class="custom-label">Mẫu Xe Giao Dịch</label>
+                    <div class="input-wrapper">
+                        <i class='bx bxs-car input-icon'></i>
+                        <select asp-for="XeId" class="glass-input" asp-items="ViewBag.XeId">
+                            <option value="">-- Chọn xe trong kho --</option>
+                        </select>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="NhanVienId" class="control-label"></label>
-                <select asp-for="NhanVienId" class ="form-control" asp-items="ViewBag.NhanVienId"></select>
+
+            <div class="custom-input-group mt-3">
+                <label asp-for="GiaChot" class="custom-label">Giá Chốt Thực Tế (VNĐ)</label>
+                <div class="input-wrapper">
+                    <i class='bx bx-money input-icon' style="font-size: 1.8rem;"></i>
+                    <input asp-for="GiaChot" class="glass-input price-input" type="number" placeholder="Nhập số tiền..." required />
+                </div>
+                <span asp-validation-for="GiaChot" class="text-danger mt-2 d-block" style="font-size: 0.85rem;"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="XeId" class="control-label"></label>
-                <select asp-for="XeId" class ="form-control" asp-items="ViewBag.XeId"></select>
+
+            <div class="mt-4 p-3" style="background: rgba(0, 242, 254, 0.05); border-left: 3px solid #00f2fe; border-radius: 0 10px 10px 0;">
+                <div class="d-flex align-items-center gap-2" style="color: #00f2fe; font-weight: 600; font-size: 0.9rem;">
+                    <i class='bx bx-info-circle fs-5'></i> Xác nhận giao dịch
+                </div>
+                <p class="mb-0 mt-1" style="color: rgba(255,255,255,0.7); font-size: 0.85rem;">
+                    Sau khi Lập Hợp Đồng, vui lòng quay lại kho xe để chuyển trạng thái xe thành "Đã bàn giao".
+                </p>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+
+            <div class="action-footer">
+                <a asp-action="Index" class="btn-back-glass">
+                    <i class='bx bx-arrow-back'></i> Hủy Bỏ
+                </a>
+                <button type="submit" class="btn-submit-neon">
+                    <i class='bx bx-check-shield'></i> PHÁT HÀNH HỢP ĐỒNG
+                </button>
             </div>
         </form>
+
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

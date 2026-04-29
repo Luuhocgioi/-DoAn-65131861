@@ -1,59 +1,344 @@
 @model IEnumerable<QuanLyGara.Models.Xe>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Kho Xe Siêu Cấp";
 }
 
-<h1>Index</h1>
+<link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+<style>
+    /* Kế thừa bộ màu ĐỘC QUYỀN của hệ thống */
+    :root {
+        --primary-color: #2b2d42;
+        --accent-color: #ef233c;
+        --bg-color: #f4f6f9;
+        --text-color: #8d97ad;
+    }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.SoKhungSoMay)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HangXe)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DongXe)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GiaBan)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DaBan)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.SoKhungSoMay)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HangXe)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DongXe)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GiaBan)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DaBan)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    .showroom-container {
+        font-family: 'Outfit', sans-serif;
+        background: transparent;
+        padding: 10px;
+        color: var(--primary-color);
+    }
+
+    .showroom-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 40px;
+        border-bottom: 2px solid rgba(43, 45, 66, 0.05);
+        padding-bottom: 20px;
+    }
+
+    .showroom-title {
+        font-size: 2.5rem;
+        font-weight: 900;
+        letter-spacing: -1px;
+        color: var(--primary-color);
+        margin: 0;
+    }
+
+    /* Nút Thêm Mới - Phong cách Thể thao */
+    .btn-sport {
+        background: var(--accent-color);
+        color: #ffffff;
+        padding: 12px 28px;
+        border-radius: 50px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 8px 20px rgba(239, 35, 60, 0.3);
+    }
+
+        .btn-sport:hover {
+            background: #d90429;
+            color: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(239, 35, 60, 0.4);
+        }
+
+    /* Khung chứa các thẻ Xe */
+    .car-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    /* Thẻ Xe (Card nổi bứt phá) */
+    .car-ticket {
+        display: flex;
+        align-items: center;
+        background: #2b2d42;
+        border: 1px solid rgba(0,0,0,0.03);
+        border-radius: 20px;
+        padding: 20px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 10px 30px rgba(43, 45, 66, 0.04);
+    }
+
+        .car-ticket:hover {
+            transform: scale(1.02) translateX(10px);
+            border-color: rgba(239, 35, 60, 0.2);
+            box-shadow: -10px 15px 35px rgba(43, 45, 66, 0.1);
+        }
+
+        /* Dải màu nhấn bên trái thẻ */
+        .car-ticket::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--accent-color);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .car-ticket:hover::before {
+            opacity: 1;
+        }
+
+    /* Hiệu ứng hình ảnh 3D */
+    .car-visual {
+        width: 220px;
+        height: 130px;
+        border-radius: 12px;
+        overflow: hidden;
+        position: relative;
+        flex-shrink: 0;
+        transform: perspective(1000px) rotateY(15deg);
+        transition: transform 0.5s ease;
+        box-shadow: 5px 10px 20px rgba(43, 45, 66, 0.15);
+    }
+
+    .car-ticket:hover .car-visual {
+        transform: perspective(1000px) rotateY(0deg);
+    }
+
+    .car-visual img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .image-counter {
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+        background: rgba(43, 45, 66, 0.85);
+        backdrop-filter: blur(4px);
+        color: #ffffff;
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    /* Thông tin xe */
+    .car-info {
+        flex-grow: 1;
+        padding: 0 30px;
+    }
+
+    .car-brand {
+        color: var(--bg-color);
+        font-size: 0.9rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 5px;
+    }
+
+    .car-name {
+        font-size: 2.2rem;
+        font-weight: 900;
+        color: var(--bg-color);
+        line-height: 1.1;
+        margin: 0 0 10px 0;
+    }
+
+    .car-vin {
+        font-family: monospace;
+        background: var(--bg-color);
+        color: var(--text-color);
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        display: inline-block;
+    }
+
+    /* Khu vực Giá & Trạng thái */
+    .car-meta {
+        text-align: right;
+        padding-right: 30px;
+        border-right: 2px dashed rgba(43, 45, 66, 0.1);
+    }
+
+    .car-price {
+        font-size: 1.9rem;
+        font-weight: 800;
+        color: var(--bg-color);
+    }
+
+    .status-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-top: 8px;
+        color: #f4f6f9;
+    }
+
+    .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+    }
+
+        .dot.available {
+            background: #10b981;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+        }
+
+        .dot.sold {
+            background: var(--bg-color);
+        }
+    /* Bảng điều khiển bay (Floating Actions) */
+    .car-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding-left: 20px;
+        /* Vẫn giữ ẩn, chỉ hiện khi Hover */
+        opacity: 0;
+        transform: translateX(20px);
+        transition: all 0.3s ease;
+    }
+
+    .car-ticket:hover .car-actions {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    /* Biến nút bấm thành Kính mờ với ICON MÀU TRẮNG */
+    .action-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        /* FIX QUAN TRỌNG NHẤT: Đặt màu Icon mặc định là TRẮNG */
+        color: #ffffff;
+        /* Nền trong suốt tạo hiệu ứng kính mờ nịnh mắt */
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.2s ease-in-out;
+        font-size: 1.25rem;
+    }
+
+        .action-btn i {
+            /* Đảm bảo icon bên trong luôn dùng màu của action-btn */
+            color: inherit;
+        }
+
+        /* Hiệu ứng khi di chuột: Sáng rực rỡ */
+        .action-btn:hover {
+            background: #ffffff;
+            color: #0f1115; /* Icon chuyển sang màu đen để nổi bật */
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+            border-color: #ffffff;
+        }
+
+        /* Riêng nút Xóa: Chuyển sang màu ĐỎ chủ đạo khi Hover */
+        .action-btn.btn-delete:hover {
+            background: var(--accent-color); /* Màu đỏ thể thao */
+            color: #ffffff; /* Icon giữ màu trắng */
+            border-color: var(--accent-color);
+            box-shadow: 0 5px 15px rgba(239, 35, 60, 0.5);
+        }
+</style>
+
+<div class="showroom-container">
+    <div class="showroom-header">
+        <div>
+            <h2 class="showroom-title">KHO XE SIÊU CẤP</h2>
+            <p class="text-muted mt-2 mb-0" style="color: var(--text-color)!important;">Hệ thống quản lý không gian trưng bày.</p>
+        </div>
+        <a asp-action="Create" class="btn-sport">
+            <i class='bx bx-plus'></i> Nhập Xe Mới
+        </a>
+    </div>
+
+    <div class="car-grid">
+        @foreach (var item in Model)
+        {
+            <div class="car-ticket">
+                <div class="car-visual">
+                    @if (item.HinhAnhXes.Any())
+                    {
+                        var anhChinh = item.HinhAnhXes.FirstOrDefault(a => a.LaAnhChinh == true) ?? item.HinhAnhXes.First();
+                        <img src="@anhChinh.DuongDanAnh" alt="Xe" />
+                        if (item.HinhAnhXes.Count > 1)
+                        {
+                            <div class="image-counter">
+                                +@(item.HinhAnhXes.Count - 1) ẢNH
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="d-flex align-items-center justify-content-center h-100 w-100" style="background: var(--bg-color); color: var(--text-color);">
+                            <i class='bx bx-image-alt fs-1'></i>
+                        </div>
+                    }
+                </div>
+
+                <div class="car-info">
+                    <div class="car-brand">@item.HangXe</div>
+                    <h3 class="car-name">@item.DongXe</h3>
+                    <div class="car-vin">VIN: @item.SoKhungSoMay</div>
+                </div>
+
+                <div class="car-meta">
+                    <div class="car-price">@item.GiaBan.ToString("N0") <span style="font-size:1rem; color: var(--text-color);">VNĐ</span></div>
+                    <div class="status-indicator">
+                        @if (item.DaBan == true)
+                        {
+                            <span class="dot sold"></span> <span>Đã Bàn Giao</span>
+                        }
+                        else
+                        {
+                            <span class="dot available"></span> <span style="color: var(--bg-color);">Sẵn Sàng</span>
+                        }
+                    </div>
+                </div>
+
+                <div class="car-actions">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="action-btn" title="Chỉnh sửa">
+                        <i class='bx bxs-edit-alt'></i>
+                    </a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="action-btn" title="Hồ sơ chi tiết">
+                        <i class='bx bx-scan'></i>
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="action-btn btn-delete" title="Xóa khỏi hệ thống">
+                        <i class='bx bx-trash'></i>
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

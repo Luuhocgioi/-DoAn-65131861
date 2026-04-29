@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("QuanLyGara")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+88104a092a6a1363894ec45d20a3c3c36fd285d3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4a3e41d75c82440b727de4f7ed47121061f2158a")]
 [assembly: System.Reflection.AssemblyProductAttribute("QuanLyGara")]
 [assembly: System.Reflection.AssemblyTitleAttribute("QuanLyGara")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

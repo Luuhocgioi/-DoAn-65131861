@@ -3,24 +3,64 @@
   "WorkspaceRootPath": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E0E2AA1D-2DE0-40B6-9C79-748C0E0C5940}|QuanLyGara\\QuanLyGara.csproj|c:\\myprojects\\doantotnghiep\\-doan-65131861\\quanlygara\\quanlygara\\controllers\\nhanvienscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E0E2AA1D-2DE0-40B6-9C79-748C0E0C5940}|QuanLyGara\\QuanLyGara.csproj|solutionrelative:quanlygara\\controllers\\nhanvienscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|c:\\myprojects\\doantotnghiep\\-doan-65131861\\quanlygara\\quanlygara\\views\\donhangs\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|solutionrelative:quanlygara\\views\\donhangs\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E0E2AA1D-2DE0-40B6-9C79-748C0E0C5940}|QuanLyGara\\QuanLyGara.csproj|c:\\myprojects\\doantotnghiep\\-doan-65131861\\quanlygara\\quanlygara\\controllers\\donhangscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E0E2AA1D-2DE0-40B6-9C79-748C0E0C5940}|QuanLyGara\\QuanLyGara.csproj|solutionrelative:quanlygara\\controllers\\donhangscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|c:\\myprojects\\doantotnghiep\\-doan-65131861\\quanlygara\\quanlygara\\views\\donhangs\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|solutionrelative:quanlygara\\views\\donhangs\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E0E2AA1D-2DE0-40B6-9C79-748C0E0C5940}|QuanLyGara\\QuanLyGara.csproj|c:\\myprojects\\doantotnghiep\\-doan-65131861\\quanlygara\\quanlygara\\models\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E0E2AA1D-2DE0-40B6-9C79-748C0E0C5940}|QuanLyGara\\QuanLyGara.csproj|solutionrelative:quanlygara\\models\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|c:\\myprojects\\doantotnghiep\\-doan-65131861\\quanlygara\\quanlygara\\views\\donhangs\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|solutionrelative:quanlygara\\views\\donhangs\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E0E2AA1D-2DE0-40B6-9C79-748C0E0C5940}|QuanLyGara\\QuanLyGara.csproj|c:\\myprojects\\doantotnghiep\\-doan-65131861\\quanlygara\\quanlygara\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E0E2AA1D-2DE0-40B6-9C79-748C0E0C5940}|QuanLyGara\\QuanLyGara.csproj|solutionrelative:quanlygara\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|c:\\myprojects\\doantotnghiep\\-doan-65131861\\quanlygara\\quanlygara\\views\\xes\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|solutionrelative:quanlygara\\views\\xes\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E0E2AA1D-2DE0-40B6-9C79-748C0E0C5940}|QuanLyGara\\QuanLyGara.csproj|c:\\myprojects\\doantotnghiep\\-doan-65131861\\quanlygara\\quanlygara\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{E0E2AA1D-2DE0-40B6-9C79-748C0E0C5940}|QuanLyGara\\QuanLyGara.csproj|solutionrelative:quanlygara\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|c:\\myprojects\\doantotnghiep\\-doan-65131861\\quanlygara\\quanlygara\\views\\xes\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|solutionrelative:quanlygara\\views\\xes\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|c:\\myprojects\\doantotnghiep\\-doan-65131861\\quanlygara\\quanlygara\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|solutionrelative:quanlygara\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|c:\\myprojects\\doantotnghiep\\-doan-65131861\\quanlygara\\quanlygara\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|solutionrelative:quanlygara\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|c:\\myprojects\\doantotnghiep\\-doan-65131861\\quanlygara\\quanlygara\\views\\xes\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|solutionrelative:quanlygara\\views\\xes\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|c:\\myprojects\\doantotnghiep\\-doan-65131861\\quanlygara\\quanlygara\\views\\xes\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|solutionrelative:quanlygara\\views\\xes\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|c:\\myprojects\\doantotnghiep\\-doan-65131861\\quanlygara\\quanlygara\\views\\xes\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|solutionrelative:quanlygara\\views\\xes\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|c:\\myprojects\\doantotnghiep\\-doan-65131861\\quanlygara\\quanlygara\\controllers\\xescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|solutionrelative:quanlygara\\controllers\\xescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|c:\\myprojects\\doantotnghiep\\-doan-65131861\\quanlygara\\quanlygara\\controllers\\nhanvienscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|solutionrelative:quanlygara\\controllers\\nhanvienscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|c:\\myprojects\\doantotnghiep\\-doan-65131861\\quanlygara\\quanlygara\\controllers\\donhangscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|solutionrelative:quanlygara\\controllers\\donhangscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|c:\\myprojects\\doantotnghiep\\-doan-65131861\\quanlygara\\quanlygara\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|solutionrelative:quanlygara\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|c:\\myprojects\\doantotnghiep\\-doan-65131861\\quanlygara\\quanlygara\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{73B16C30-3C69-D9A2-D34B-331A35771FDA}|QuanLyGara\\QuanLyGara.csproj|solutionrelative:quanlygara\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -35,53 +75,66 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "NhanViensController.cs",
-              "DocumentMoniker": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Controllers\\NhanViensController.cs",
-              "RelativeDocumentMoniker": "QuanLyGara\\Controllers\\NhanViensController.cs",
-              "ToolTip": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Controllers\\NhanViensController.cs",
-              "RelativeToolTip": "QuanLyGara\\Controllers\\NhanViensController.cs",
-              "ViewState": "AgIAAJwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-14T20:30:46.111Z",
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Views\\DonHangs\\Create.cshtml",
+              "RelativeDocumentMoniker": "QuanLyGara\\Views\\DonHangs\\Create.cshtml",
+              "ToolTip": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Views\\DonHangs\\Create.cshtml",
+              "RelativeToolTip": "QuanLyGara\\Views\\DonHangs\\Create.cshtml",
+              "ViewState": "AgIAAN8AAAAAAAAAAAAAAP0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-29T19:47:04.098Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "DonHangsController.cs",
-              "DocumentMoniker": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Controllers\\DonHangsController.cs",
-              "RelativeDocumentMoniker": "QuanLyGara\\Controllers\\DonHangsController.cs",
-              "ToolTip": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Controllers\\DonHangsController.cs",
-              "RelativeToolTip": "QuanLyGara\\Controllers\\DonHangsController.cs",
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Views\\DonHangs\\Details.cshtml",
+              "RelativeDocumentMoniker": "QuanLyGara\\Views\\DonHangs\\Details.cshtml",
+              "ToolTip": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Views\\DonHangs\\Details.cshtml",
+              "RelativeToolTip": "QuanLyGara\\Views\\DonHangs\\Details.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-14T20:27:09.805Z",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-29T19:47:01.732Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Views\\DonHangs\\Index.cshtml",
+              "RelativeDocumentMoniker": "QuanLyGara\\Views\\DonHangs\\Index.cshtml",
+              "ToolTip": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Views\\DonHangs\\Index.cshtml",
+              "RelativeToolTip": "QuanLyGara\\Views\\DonHangs\\Index.cshtml",
+              "ViewState": "AgIAABUAAAAAAAAAAAAkwCMAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-29T19:43:54.889Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "QuanLyGara\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "QuanLyGara\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAIwCMAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-29T19:27:59.939Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Program.cs",
-              "RelativeDocumentMoniker": "QuanLyGara\\Program.cs",
-              "ToolTip": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Program.cs",
-              "RelativeToolTip": "QuanLyGara\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-14T19:50:32.016Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\appsettings.json",
-              "RelativeDocumentMoniker": "QuanLyGara\\appsettings.json",
-              "ToolTip": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\appsettings.json",
-              "RelativeToolTip": "QuanLyGara\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-04-14T19:49:57.717Z",
+              "Title": "Delete.cshtml",
+              "DocumentMoniker": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Views\\Xes\\Delete.cshtml",
+              "RelativeDocumentMoniker": "QuanLyGara\\Views\\Xes\\Delete.cshtml",
+              "ToolTip": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Views\\Xes\\Delete.cshtml",
+              "RelativeToolTip": "QuanLyGara\\Views\\Xes\\Delete.cshtml",
+              "ViewState": "AgIAACgAAAAAAAAAAAAkwDkAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-29T19:15:50.143Z",
               "EditorCaption": ""
             },
             {
@@ -90,16 +143,129 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ApplicationDbContext.cs",
-              "DocumentMoniker": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Models\\ApplicationDbContext.cs",
-              "RelativeDocumentMoniker": "QuanLyGara\\Models\\ApplicationDbContext.cs",
-              "ToolTip": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Models\\ApplicationDbContext.cs",
-              "RelativeToolTip": "QuanLyGara\\Models\\ApplicationDbContext.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAAAAgAAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-14T19:49:00.811Z",
+              "DocumentIndex": 8,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Views\\Xes\\Details.cshtml",
+              "RelativeDocumentMoniker": "QuanLyGara\\Views\\Xes\\Details.cshtml",
+              "ToolTip": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Views\\Xes\\Details.cshtml",
+              "RelativeToolTip": "QuanLyGara\\Views\\Xes\\Details.cshtml",
+              "ViewState": "AgIAANkAAAAAAAAAAAArwPUAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-29T18:59:57.695Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Views\\Xes\\Create.cshtml",
+              "RelativeDocumentMoniker": "QuanLyGara\\Views\\Xes\\Create.cshtml",
+              "ToolTip": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Views\\Xes\\Create.cshtml",
+              "RelativeToolTip": "QuanLyGara\\Views\\Xes\\Create.cshtml",
+              "ViewState": "AgIAAG0AAAAAAAAAAADwv40AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-29T18:56:58.062Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "XesController.cs",
+              "DocumentMoniker": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Controllers\\XesController.cs",
+              "RelativeDocumentMoniker": "QuanLyGara\\Controllers\\XesController.cs",
+              "ToolTip": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Controllers\\XesController.cs",
+              "RelativeToolTip": "QuanLyGara\\Controllers\\XesController.cs",
+              "ViewState": "AgIAAJoAAAAAAAAAAADwv7QAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-29T18:39:43.571Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Views\\Xes\\Edit.cshtml",
+              "RelativeDocumentMoniker": "QuanLyGara\\Views\\Xes\\Edit.cshtml",
+              "ToolTip": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Views\\Xes\\Edit.cshtml",
+              "RelativeToolTip": "QuanLyGara\\Views\\Xes\\Edit.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIIAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-29T18:35:41.305Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Views\\Xes\\Index.cshtml",
+              "RelativeDocumentMoniker": "QuanLyGara\\Views\\Xes\\Index.cshtml",
+              "ToolTip": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Views\\Xes\\Index.cshtml",
+              "RelativeToolTip": "QuanLyGara\\Views\\Xes\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-15T07:21:37.806Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "QuanLyGara\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "QuanLyGara\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAALoAAAAAAAAAAAAIwNcAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-15T07:14:23.344Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "NhanViensController.cs",
+              "DocumentMoniker": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Controllers\\NhanViensController.cs",
+              "RelativeDocumentMoniker": "QuanLyGara\\Controllers\\NhanViensController.cs",
+              "ToolTip": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Controllers\\NhanViensController.cs",
+              "RelativeToolTip": "QuanLyGara\\Controllers\\NhanViensController.cs",
+              "ViewState": "AgIAAJwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-14T20:30:46.111Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "DonHangsController.cs",
+              "DocumentMoniker": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Controllers\\DonHangsController.cs",
+              "RelativeDocumentMoniker": "QuanLyGara\\Controllers\\DonHangsController.cs",
+              "ToolTip": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Controllers\\DonHangsController.cs",
+              "RelativeToolTip": "QuanLyGara\\Controllers\\DonHangsController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-14T20:27:09.805Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Program.cs",
+              "RelativeDocumentMoniker": "QuanLyGara\\Program.cs",
+              "ToolTip": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\Program.cs",
+              "RelativeToolTip": "QuanLyGara\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-14T19:50:32.016Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\appsettings.json",
+              "RelativeDocumentMoniker": "QuanLyGara\\appsettings.json",
+              "ToolTip": "C:\\MyProjects\\DoAnTotNghiep\\-DoAn-65131861\\QuanLyGara\\QuanLyGara\\appsettings.json",
+              "RelativeToolTip": "QuanLyGara\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-04-14T19:49:57.717Z"
             }
           ]
         }

@@ -1,53 +1,301 @@
 @model IEnumerable<QuanLyGara.Models.DonHang>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Quản Lý Giao Dịch";
 }
 
-<h1>Index</h1>
+<style>
+    /* Kế thừa hệ màu Siêu Cấp */
+    :root {
+        --primary-color: #2b2d42;
+        --accent-color: #ef233c;
+        --bg-color: #0f1115; /* Nền tối điện ảnh */
+    }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.NgayLap)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GiaChot)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NhanVien)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Xe)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NgayLap)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GiaChot)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NhanVien.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Xe.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    .transaction-container {
+        padding: 10px;
+        color: #fff;
+    }
+
+    /* Tiêu đề & Nút thêm mới */
+    .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 40px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        padding-bottom: 20px;
+    }
+
+    .dashboard-title {
+        font-size: 2.2rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        background: linear-gradient(90deg, #fff, #8d97ad);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 0;
+    }
+
+    .btn-create-neon {
+        background: rgba(239, 35, 60, 0.1);
+        color: var(--accent-color);
+        border: 1px solid var(--accent-color);
+        padding: 12px 28px;
+        border-radius: 50px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .btn-create-neon:hover {
+            background: var(--accent-color);
+            color: #fff;
+            box-shadow: 0 0 20px rgba(239, 35, 60, 0.5);
+        }
+
+    /* Grid chứa các hợp đồng */
+    .invoice-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+        gap: 25px;
+    }
+
+    /* Thẻ Hợp đồng (Glassmorphism Card) */
+    .invoice-ticket {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        padding: 25px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        display: flex;
+        flex-direction: column;
+    }
+
+        .invoice-ticket:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-5px);
+            border-color: rgba(239, 35, 60, 0.3);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        }
+
+    /* Cột mốc thời gian */
+    .invoice-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        border-bottom: 1px dashed rgba(255,255,255,0.1);
+        padding-bottom: 15px;
+    }
+
+    .invoice-date {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #8d97ad;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+        .invoice-date i {
+            color: #00f2fe;
+            font-size: 1.2rem;
+        }
+
+    /* Nội dung Hợp đồng */
+    .invoice-body {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .info-row {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .info-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        background: rgba(255,255,255,0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        color: #fff;
+    }
+
+    .info-detail {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .info-label {
+        font-size: 0.8rem;
+        color: #8d97ad;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .info-value {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #fff;
+    }
+
+    /* Giá chốt siêu to */
+    .invoice-price-container {
+        text-align: right;
+        margin-top: auto;
+    }
+
+    .price-label {
+        font-size: 0.85rem;
+        color: #8d97ad;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .price-amount {
+        font-size: 2.2rem;
+        font-weight: 900;
+        color: var(--accent-color); /* Đỏ rực */
+        line-height: 1.2;
+    }
+
+        .price-amount span {
+            font-size: 1rem;
+            color: #8d97ad;
+            font-weight: 500;
+        }
+
+    /* Lớp overlay chứa Nút thao tác (Hiện ra khi hover) */
+    .invoice-actions {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: linear-gradient(to top, rgba(15,17,21,1) 0%, rgba(15,17,21,0.8) 50%, transparent 100%);
+        padding: 30px 25px 25px;
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.3s ease;
+    }
+
+    .invoice-ticket:hover .invoice-actions {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .btn-action-glass {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(5px);
+        text-decoration: none;
+        font-size: 1.3rem;
+        transition: all 0.2s;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+
+        .btn-action-glass:hover {
+            background: #fff;
+            color: #0f1115;
+            transform: scale(1.15);
+        }
+
+        .btn-action-glass.delete:hover {
+            background: var(--accent-color);
+            color: #fff;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(239, 35, 60, 0.6);
+        }
+</style>
+
+<div class="transaction-container">
+    <div class="dashboard-header">
+        <div>
+            <h2 class="dashboard-title">HỢP ĐỒNG & GIAO DỊCH</h2>
+            <p class="text-muted mt-2 mb-0" style="color: #8d97ad!important;">Lưu trữ hồ sơ xuất xe và doanh thu.</p>
+        </div>
+        <a asp-action="Create" class="btn-create-neon">
+            <i class='bx bx-plus-circle fs-5'></i> Lập Đơn Mới
+        </a>
+    </div>
+
+    <div class="invoice-grid">
+        @foreach (var item in Model)
+        {
+            <div class="invoice-ticket">
+                <div class="invoice-header">
+                    <div class="invoice-date">
+                        <i class='bx bx-calendar-check'></i>
+                        @* Hiển thị ngày giờ rõ ràng *@
+                        @item.NgayLap?.ToString("dd/MM/yyyy - HH:mm")
+                    </div>
+                    <i class='bx bx-receipt' style="font-size: 1.5rem; color: rgba(255,255,255,0.2);"></i>
+                </div>
+
+                <div class="invoice-body">
+                    <div class="info-row">
+                        <div class="info-icon"><i class='bx bxs-user-badge'></i></div>
+                        <div class="info-detail">
+                            <span class="info-label">Nhân Viên Phụ Trách</span>
+                            <span class="info-value">Mã NV: @item.NhanVien?.Id</span>
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-icon"><i class='bx bxs-car'></i></div>
+                        <div class="info-detail">
+                            <span class="info-label">Phương Tiện Giao Dịch</span>
+                            <span class="info-value">Mã Xe: @item.Xe?.Id</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="invoice-price-container">
+                    <div class="price-label">Giá Trị Hợp Đồng</div>
+                    <div class="price-amount">
+                        @item.GiaChot.ToString("N0") <span>VNĐ</span>
+                    </div>
+                </div>
+
+                <div class="invoice-actions">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn-action-glass" title="Cập nhật đơn">
+                        <i class='bx bxs-edit-alt'></i>
+                    </a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn-action-glass" title="Xem chi tiết biên lai">
+                        <i class='bx bx-scan'></i>
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn-action-glass delete" title="Hủy bỏ giao dịch">
+                        <i class='bx bx-trash'></i>
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

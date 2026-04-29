@@ -1,50 +1,216 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - QuanLyGara</title>
-    <script type="importmap"></script>
+    <title>@ViewData["Title"] - AutoPro</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/QuanLyGara.styles.css" asp-append-version="true" />
+
+    <style>
+            :root {
+                /* Vẫn giữ màu Đỏ Thể Thao ĐỘC QUYỀN của bạn làm điểm nhấn (thay cho màu xanh Gravity) */
+                --accent-color: #ef233c;
+            }
+
+            body, html {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                min-height: 100vh;
+                font-family: 'Outfit', sans-serif;
+                background-color: #0f1115;
+                color: #ffffff;
+                overflow-x: hidden;
+            }
+
+            /* 1. LỚP HÌNH NỀN FULL MÀN HÌNH (Thay phi hành gia bằng Gara Siêu Xe) */
+            .bg-cinematic {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                z-index: -2;
+                background: url('https://images.unsplash.com/photo-1583121274602-3e2820c69888?q=80&w=2070&auto=format&fit=crop') no-repeat center center;
+                background-size: cover;
+            }
+
+            /* 2. LỚP PHỦ ĐEN TRÁI-SANG-PHẢI (Giúp đọc được chữ) */
+            .bg-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                z-index: -1;
+                background: linear-gradient(90deg, rgba(15,17,21,0.95) 0%, rgba(15,17,21,0.7) 45%, rgba(15,17,21,0.2) 100%);
+            }
+
+            /* 3. THANH ĐIỀU HƯỚNG (NAVBAR) TRONG SUỐT NHƯ GRAVITY */
+            .gravity-nav {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 40px 80px;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                z-index: 1000;
+                transition: all 0.4s ease;
+            }
+
+                /* Khi cuộn chuột xuống, Navbar tự hiện nền đen mờ */
+                .gravity-nav.scrolled {
+                    background: rgba(15, 17, 21, 0.9);
+                    backdrop-filter: blur(15px);
+                    padding: 20px 80px;
+                    border-bottom: 1px solid rgba(255,255,255,0.05);
+                }
+
+            .brand-logo {
+                font-size: 1.6rem;
+                font-weight: 900;
+                color: #fff;
+                text-decoration: none;
+                letter-spacing: -0.5px;
+            }
+
+                .brand-logo span {
+                    color: var(--accent-color);
+                }
+
+            .nav-links {
+                display: flex;
+                gap: 50px;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+
+                .nav-links a {
+                    color: rgba(255,255,255,0.7);
+                    text-decoration: none;
+                    font-size: 1rem;
+                    font-weight: 500;
+                    transition: color 0.3s;
+                }
+
+                    .nav-links a:hover, .nav-links a.active {
+                        color: #fff;
+                    }
+
+            /* Nút Contact bo tròn y hệt ảnh */
+            .btn-gravity {
+                background-color: var(--accent-color);
+                color: #fff !important;
+                padding: 12px 35px;
+                border-radius: 50px;
+                font-weight: 700;
+                font-size: 0.95rem;
+                text-decoration: none;
+                transition: transform 0.3s, box-shadow 0.3s;
+            }
+
+                .btn-gravity:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 10px 25px rgba(239, 35, 60, 0.4);
+                }
+
+            /* 4. VÙNG HIỂN THỊ NỘI DUNG */
+            .content-wrapper {
+                padding-top: 160px; /* Đẩy nội dung xuống khỏi Navbar */
+                padding-left: 80px;
+                padding-right: 80px;
+                min-height: 100vh;
+                position: relative;
+                z-index: 1;
+            }
+
+                /* Tinh chỉnh lại Table và Form cho phù hợp nền tối */
+                .content-wrapper table {
+                    background: rgba(255,255,255,0.03);
+                    color: #fff;
+                    border-radius: 16px;
+                    backdrop-filter: blur(10px);
+                }
+
+                .content-wrapper thead {
+                    background: rgba(0,0,0,0.4);
+                    color: var(--accent-color);
+                }
+
+                .content-wrapper td, .content-wrapper th {
+                    border-color: rgba(255,255,255,0.05);
+                }
+
+            .form-container {
+                background: rgba(15,17,21,0.8);
+                backdrop-filter: blur(15px);
+                border: 1px solid rgba(255,255,255,0.05);
+            }
+
+            .form-control-custom {
+                background: rgba(255,255,255,0.05);
+                color: #fff;
+                border-color: rgba(255,255,255,0.1);
+            }
+
+                .form-control-custom:focus {
+                    background: rgba(255,255,255,0.1);
+                    color: #fff;
+                }
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">QuanLyGara</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <div class="bg-cinematic"></div>
+    <div class="bg-overlay"></div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - QuanLyGara - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+    <nav class="gravity-nav" id="mainNav">
+        <a href="/" class="brand-logo">autopro<span>.</span></a>
+
+        <ul class="nav-links">
+            <li><a asp-controller="Home" asp-action="Index">Tổng Quan</a></li>
+            <li><a asp-controller="Xes" asp-action="Index">Kho Xe</a></li>
+            <li><a asp-controller="DonHangs" asp-action="Index">Giao Dịch</a></li>
+            <li><a asp-controller="NhanViens" asp-action="Index">Nhân Sự</a></li>
+        </ul>
+
+        <a href="#" class="btn-gravity">Đăng Xuất</a>
+    </nav>
+
+    <main class="content-wrapper">
+        @RenderBody()
+    </main>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+        // Hiệu ứng đổi nền Navbar khi cuộn chuột
+        $(window).scroll(function() {
+        if ($(document).scrollTop() > 50) {
+        $('#mainNav').addClass('scrolled');
+        } else {
+        $('#mainNav').removeClass('scrolled');
+        }
+        });
+
+        // Tự động Active menu hiện tại
+        $(document).ready(function () {
+        var currentUrl = window.location.pathname.toLowerCase();
+        $('.nav-links a').each(function () {
+        var linkUrl = $(this).attr('href').toLowerCase();
+        if (currentUrl.startsWith(linkUrl) && linkUrl !== '/') {
+        $(this).addClass('active');
+        } else if (currentUrl === '/' && linkUrl === '/') {
+        $(this).addClass('active');
+        }
+        });
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
