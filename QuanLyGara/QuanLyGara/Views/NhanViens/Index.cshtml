@@ -1,47 +1,255 @@
 @model IEnumerable<QuanLyGara.Models.NhanVien>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Quản Lý Nhân Sự";
 }
 
-<h1>Index</h1>
+<style>
+    :root {
+        --primary-color: #2b2d42;
+        --accent-color: #ef233c;
+        --bg-color: #0f1115;
+    }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.HoTen)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SoDienThoai)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ChucVu)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.HoTen)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SoDienThoai)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ChucVu)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    .staff-container {
+        padding: 10px;
+        color: #fff;
+    }
+
+    /* Tiêu đề & Nút thêm mới (Đồng bộ với các trang trước) */
+    .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 40px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        padding-bottom: 20px;
+    }
+
+    .dashboard-title {
+        font-size: 2.2rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        background: linear-gradient(90deg, #fff, #8d97ad);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 0;
+    }
+
+    .btn-create-neon {
+        background: rgba(239, 35, 60, 0.1);
+        color: var(--accent-color);
+        border: 1px solid var(--accent-color);
+        padding: 12px 28px;
+        border-radius: 50px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .btn-create-neon:hover {
+            background: var(--accent-color);
+            color: #fff;
+            box-shadow: 0 0 20px rgba(239, 35, 60, 0.5);
+        }
+
+    /* Lưới chứa Thẻ ID Nhân viên */
+    .staff-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 30px;
+    }
+
+    /* Thiết kế Thẻ ID (ID Card) */
+    .id-card {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        padding: 30px 20px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+        .id-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-10px);
+            border-color: rgba(239, 35, 60, 0.4);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+
+        /* Hiệu ứng quét thẻ (Scanner line) */
+        .id-card::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-color);
+            box-shadow: 0 0 15px var(--accent-color);
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .id-card:hover::before {
+            opacity: 1;
+            top: 100%;
+            transition: all 1.5s linear infinite;
+        }
+
+    /* Avatar tự động */
+    .avatar-container {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+        padding: 5px;
+        background: linear-gradient(135deg, var(--accent-color), transparent);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+
+    .avatar-img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        background: var(--primary-color);
+    }
+
+    /* Thông tin nhân viên */
+    .staff-name {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 5px;
+        letter-spacing: 0.5px;
+    }
+
+    .staff-role {
+        display: inline-block;
+        background: rgba(0, 242, 254, 0.1);
+        color: #00f2fe; /* Màu Cyan nổi bật */
+        padding: 5px 15px;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 15px;
+        border: 1px solid rgba(0, 242, 254, 0.2);
+    }
+
+    .staff-phone {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        color: #8d97ad;
+        font-size: 0.95rem;
+        font-weight: 500;
+        background: rgba(0,0,0,0.3);
+        padding: 8px 20px;
+        border-radius: 12px;
+        width: 100%;
+    }
+
+        .staff-phone i {
+            color: var(--accent-color);
+            font-size: 1.1rem;
+        }
+
+    /* Nhóm nút thao tác (Action Buttons) */
+    .card-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 25px;
+        width: 100%;
+    }
+
+    .action-btn {
+        flex: 1;
+        padding: 10px;
+        border-radius: 12px;
+        color: #fff;
+        background: rgba(255,255,255,0.05);
+        text-decoration: none;
+        font-size: 1.2rem;
+        transition: all 0.3s;
+        border: 1px solid rgba(255,255,255,0.05);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+        .action-btn:hover {
+            background: #fff;
+            color: #0f1115;
+            transform: scale(1.05);
+        }
+
+        .action-btn.delete:hover {
+            background: var(--accent-color);
+            color: #fff;
+            border-color: var(--accent-color);
+            box-shadow: 0 5px 15px rgba(239, 35, 60, 0.4);
+        }
+</style>
+
+<div class="staff-container">
+    <div class="dashboard-header">
+        <div>
+            <h2 class="dashboard-title">HỒ SƠ NHÂN SỰ</h2>
+            <p class="text-muted mt-2 mb-0" style="color: #8d97ad!important;">Danh bạ và quyền hạn của đội ngũ Gara.</p>
+        </div>
+        <a asp-action="Create" class="btn-create-neon">
+            <i class='bx bx-user-plus fs-5'></i> Thêm Nhân Viên
+        </a>
+    </div>
+
+    <div class="staff-grid">
+        @foreach (var item in Model)
+        {
+            <div class="id-card">
+
+                <!-- Avatar tự động lấy chữ cái đầu của Tên -->
+                <div class="avatar-container">
+                    <img src="https://ui-avatars.com/api/?name=@item.HoTen&background=0f1115&color=ef233c&size=150&bold=true" class="avatar-img" alt="@item.HoTen" />
+                </div>
+
+                <!-- Thông tin chính -->
+                <h3 class="staff-name">@item.HoTen</h3>
+                <div class="staff-role">@item.ChucVu</div>
+
+                <div class="staff-phone">
+                    <i class='bx bxs-phone-call'></i> @item.SoDienThoai
+                </div>
+
+                <!-- Nút thao tác -->
+                <div class="card-actions">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="action-btn" title="Chỉnh sửa thông tin">
+                        <i class='bx bxs-edit-alt'></i>
+                    </a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="action-btn" title="Xem chi tiết">
+                        <i class='bx bx-id-card'></i>
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="action-btn delete" title="Xóa nhân sự">
+                        <i class='bx bx-user-x'></i>
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

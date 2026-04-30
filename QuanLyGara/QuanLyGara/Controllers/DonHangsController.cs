@@ -60,12 +60,24 @@ namespace QuanLyGara.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,NgayLap,GiaChot,NhanVienId,XeId")] DonHang donHang)
         {
+            // 1. TUYỆT CHIÊU: Bỏ qua kiểm tra khắt khe của ASP.NET đối với các đối tượng liên kết
+            ModelState.Remove("NhanVien");
+            ModelState.Remove("Xe");
+
+            // 2. Tự động gán thời gian lúc bấm nút làm Ngày Lập Hóa Đơn
+            donHang.NgayLap = DateTime.Now;
+
+            // 3. Kiểm tra lại, lúc này chắc chắn IsValid sẽ = true
             if (ModelState.IsValid)
             {
                 _context.Add(donHang);
                 await _context.SaveChangesAsync();
+
+                // Lưu thành công -> Chuyển về trang danh sách
                 return RedirectToAction(nameof(Index));
             }
+
+            // Nếu vẫn lỗi (do chưa nhập đủ), nạp lại danh sách cho Select và ở lại trang
             ViewData["NhanVienId"] = new SelectList(_context.NhanViens, "Id", "Id", donHang.NhanVienId);
             ViewData["XeId"] = new SelectList(_context.Xes, "Id", "Id", donHang.XeId);
             return View(donHang);
