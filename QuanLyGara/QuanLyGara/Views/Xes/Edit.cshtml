@@ -1,142 +1,400 @@
 @model QuanLyGara.Models.Xe
 
 @{
-    ViewData["Title"] = "Cập Nhật Hồ Sơ Xe";
+    ViewData["Title"] = "Cập Nhật Dữ Liệu Xe";
 }
 
 <style>
     :root {
         --primary-color: #2b2d42;
         --accent-color: #ef233c;
-        --bg-color: #f4f6f9;
-        --text-color: #8d97ad;
+        --bg-color: #0f1115; /* Nền tối đồng bộ */
     }
 
-    .form-container {
-        background: #ffffff;
-        border-radius: 20px;
+    .car-edit-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 0;
+    }
+
+    /* Bảng điều khiển kính mờ (Glass Console) */
+    .glass-console {
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 24px;
         padding: 40px;
-        box-shadow: 0 10px 30px rgba(43, 45, 66, 0.05);
-        font-family: 'Segoe UI', sans-serif;
+        width: 100%;
+        max-width: 800px;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.5);
     }
 
-    .form-control-custom {
-        border: 1px solid #e2e8f0;
-        border-radius: 10px;
-        padding: 12px 20px;
-        background: #f8fafc;
-        transition: border-color 0.2s;
+    .console-header {
+        text-align: center;
+        margin-bottom: 40px;
     }
 
-        .form-control-custom:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(43, 45, 66, 0.1);
-            outline: none;
+    .console-icon {
+        font-size: 3.5rem;
+        color: #00f2fe; /* Màu Cyan cho Edit để phân biệt với Create */
+        margin-bottom: 10px;
+        filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.5));
+    }
+
+    .console-title {
+        font-size: 2rem;
+        font-weight: 900;
+        color: #fff;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin: 0;
+    }
+
+    .console-subtitle {
+        color: #8d97ad;
+        font-size: 0.95rem;
+        margin-top: 5px;
+    }
+
+    /* Khung cảnh báo Cyber */
+    .cyber-alert {
+        background: rgba(239, 35, 60, 0.1);
+        border-left: 4px solid var(--accent-color);
+        color: rgba(255,255,255,0.9);
+        border-radius: 0 12px 12px 0;
+        padding: 15px 20px;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+        .cyber-alert i {
+            color: var(--accent-color);
+            font-size: 1.8rem;
         }
 
-    .form-label {
-        font-weight: 600;
-        color: var(--primary-color);
-        margin-bottom: 8px;
+    /* Các nhóm ô nhập liệu */
+    .custom-input-group {
+        margin-bottom: 25px;
     }
 
-    /* Thiết kế riêng Nút gạt (Toggle Switch) cho trạng thái Đã Bán */
-    .switch-wrapper {
-        background: var(--bg-color);
+    .cyber-label {
+        color: #8d97ad;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .cyber-label i {
+            color: #00f2fe;
+            font-size: 1.1rem;
+        }
+
+    .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 15px;
+        font-size: 1.3rem;
+        color: rgba(255, 255, 255, 0.4);
+        pointer-events: none;
+        transition: color 0.3s;
+    }
+
+    .glass-input {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 14px 15px 14px 45px;
+        color: #ffffff;
+        font-size: 1.1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+        .glass-input:focus {
+            outline: none;
+            background: rgba(0, 0, 0, 0.5);
+            border-color: #00f2fe;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+        }
+
+            .glass-input:focus + .input-icon, .input-wrapper:focus-within .input-icon {
+                color: #00f2fe;
+            }
+
+    .price-input {
+        font-size: 1.3rem !important;
+        font-weight: 800;
+        color: #00f2fe !important;
+        letter-spacing: 1px;
+    }
+
+    /* Công tắc (Toggle Switch) Năng Lượng */
+    .cyber-switch-wrapper {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px dashed rgba(255, 255, 255, 0.15);
         border-radius: 15px;
         padding: 20px;
-        border: 1px dashed rgba(43, 45, 66, 0.2);
+        margin-bottom: 25px;
+        transition: all 0.3s;
     }
+
+        .cyber-switch-wrapper:hover {
+            border-color: var(--accent-color);
+            background: rgba(239, 35, 60, 0.05);
+        }
 
     .custom-switch {
         width: 3.5rem !important;
         height: 1.8rem !important;
         cursor: pointer;
+        background-color: rgba(255,255,255,0.2) !important;
+        border: none !important;
     }
 
         .custom-switch:checked {
             background-color: var(--accent-color) !important;
-            border-color: var(--accent-color) !important;
-            box-shadow: 0 0 15px rgba(239, 35, 60, 0.4);
+            box-shadow: 0 0 20px rgba(239, 35, 60, 0.6) !important;
         }
 
     .switch-label {
         font-size: 1.1rem;
         font-weight: 700;
-        color: var(--primary-color);
+        color: #fff;
         margin-left: 10px;
         margin-top: 4px;
         cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
+
+    /* Vùng Upload Ảnh */
+    .cyber-upload-area {
+        border: 2px dashed rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+        padding: 30px 20px;
+        text-align: center;
+        background: rgba(0, 0, 0, 0.2);
+        transition: all 0.3s;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .cyber-upload-area:hover {
+            border-color: #00f2fe;
+            background: rgba(0, 242, 254, 0.05);
+        }
+
+        .cyber-upload-area input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+    /* File Tag của JS */
+    .file-tag {
+        background: rgba(0, 242, 254, 0.1);
+        border: 1px solid rgba(0, 242, 254, 0.3);
+        color: #00f2fe;
+        padding: 5px 12px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        margin: 5px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        animation: fadeIn 0.3s ease;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Action Buttons */
+    .action-footer {
+        display: flex;
+        gap: 20px;
+        margin-top: 35px;
+        padding-top: 30px;
+        border-top: 1px dashed rgba(255,255,255,0.1);
+    }
+
+    .btn-back-glass {
+        flex: 1;
+        background: rgba(255,255,255,0.05);
+        color: #fff;
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 14px;
+        border-radius: 12px;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+        .btn-back-glass:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            transform: translateX(-3px);
+        }
+
+    .btn-submit-cyan {
+        flex: 2;
+        background: #00f2fe;
+        color: #0f1115;
+        border: none;
+        padding: 14px;
+        border-radius: 12px;
+        font-weight: 900;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 8px 25px rgba(0, 242, 254, 0.4);
+        cursor: pointer;
+    }
+
+        .btn-submit-cyan:hover {
+            background: #00d4ff;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 242, 254, 0.6);
+        }
 </style>
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold" style="color: var(--primary-color);">CHỈNH SỬA THÔNG TIN</h2>
-    <a asp-action="Index" class="btn btn-outline-secondary" style="border-radius: 50px;">
-        <i class='bx bx-arrow-back'></i> Hủy & Quay lại
-    </a>
-</div>
+<div class="car-edit-wrapper">
+    <div class="glass-console">
 
-<div class="row">
-    <div class="col-md-8 mx-auto">
-        <div class="form-container">
-            <form asp-action="Edit">
-                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-
-                <input type="hidden" asp-for="Id" />
-
-                <div class="alert alert-warning d-flex align-items-center mb-4" role="alert" style="border-radius: 12px; font-size: 14px;">
-                    <i class='bx bx-info-circle fs-4 me-2'></i>
-                    <div>Vui lòng kiểm tra kỹ <strong>Số khung / Số máy</strong> trước khi lưu để tránh sai lệch hồ sơ.</div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="HangXe" class="form-label">Hãng Xe</label>
-                        <input asp-for="HangXe" class="form-control form-control-custom" required />
-                        <span asp-validation-for="HangXe" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="DongXe" class="form-label">Dòng Xe</label>
-                        <input asp-for="DongXe" class="form-control form-control-custom" required />
-                        <span asp-validation-for="DongXe" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="SoKhungSoMay" class="form-label">Số Khung / Số Máy (Mã VIN)</label>
-                        <input asp-for="SoKhungSoMay" class="form-control form-control-custom" style="font-family: monospace; font-weight: bold; color: var(--accent-color);" required />
-                        <span asp-validation-for="SoKhungSoMay" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="GiaBan" class="form-label">Giá Niêm Yết (VNĐ)</label>
-                        <input asp-for="GiaBan" class="form-control form-control-custom" type="number" required />
-                        <span asp-validation-for="GiaBan" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="switch-wrapper mt-3 mb-4">
-                    <div class="form-check form-switch d-flex align-items-center">
-
-                        <input class="form-check-input custom-switch" type="checkbox" id="DaBanSwitch" name="DaBan" value="true" @(Model.DaBan == true ? "checked" : "")>
-
-                        <input type="hidden" name="DaBan" value="false" />
-
-                        <label class="form-check-label switch-label" for="DaBanSwitch">
-                            Xác nhận xe ĐÃ BÀN GIAO cho khách
-                        </label>
-                    </div>
-                    <p class="text-muted mb-0 ms-5 mt-1" style="font-size: 13px;"></p>
-                </div>
-
-                <div class="text-end mt-4 pt-3 border-top">
-                    <button type="submit" class="btn" style="background: var(--primary-color); color: #fff; padding: 12px 35px; border-radius: 50px; font-weight: 700; box-shadow: 0 8px 20px rgba(43, 45, 66, 0.3); transition: all 0.3s;">
-                        <i class='bx bx-check-double'></i> CẬP NHẬT THÔNG TIN
-                    </button>
-                </div>
-            </form>
+        <div class="console-header">
+            <i class='bx bxs-edit console-icon'></i>
+            <h2 class="console-title">CẬP NHẬT HỒ SƠ</h2>
+            <p class="console-subtitle">Chỉnh sửa thông số & Trạng thái phương tiện</p>
         </div>
+
+        <!-- THÊM enctype="multipart/form-data" ĐỂ HỖ TRỢ UPLOAD ẢNH -->
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <!-- Giữ lại ID ẩn để C# biết đang sửa xe nào -->
+            <input type="hidden" asp-for="Id" />
+
+            <div class="cyber-alert">
+                <i class='bx bx-error'></i>
+                <div>
+                    <strong>CẢNH BÁO HỆ THỐNG:</strong> Vui lòng kiểm tra kỹ <strong>Số khung / Số máy</strong> trước khi ghi đè dữ liệu để tránh sai lệch hồ sơ.
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 custom-input-group">
+                    <label asp-for="HangXe" class="cyber-label"><i class='bx bx-buildings'></i> Hãng Xe</label>
+                    <div class="input-wrapper">
+                        <i class='bx bx-purchase-tag-alt input-icon'></i>
+                        <input asp-for="HangXe" class="glass-input" required />
+                    </div>
+                    <span asp-validation-for="HangXe" class="text-danger mt-1 d-block"></span>
+                </div>
+
+                <div class="col-md-6 custom-input-group">
+                    <label asp-for="DongXe" class="cyber-label"><i class='bx bx-car'></i> Dòng Xe</label>
+                    <div class="input-wrapper">
+                        <i class='bx bx-cube input-icon'></i>
+                        <input asp-for="DongXe" class="glass-input" required />
+                    </div>
+                    <span asp-validation-for="DongXe" class="text-danger mt-1 d-block"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 custom-input-group">
+                    <label asp-for="SoKhungSoMay" class="cyber-label"><i class='bx bx-barcode-reader'></i> Số Khung / Mã VIN</label>
+                    <div class="input-wrapper">
+                        <i class='bx bx-hash input-icon'></i>
+                        <input asp-for="SoKhungSoMay" class="glass-input" style="font-family: monospace; color: var(--accent-color);" required />
+                    </div>
+                    <span asp-validation-for="SoKhungSoMay" class="text-danger mt-1 d-block"></span>
+                </div>
+
+                <div class="col-md-6 custom-input-group">
+                    <label asp-for="GiaBan" class="cyber-label"><i class='bx bx-money'></i> Giá Niêm Yết (VNĐ)</label>
+                    <div class="input-wrapper">
+                        <i class='bx bx-dollar-circle input-icon' style="color: #00f2fe;"></i>
+                        <input asp-for="GiaBan" class="glass-input price-input" type="number" required />
+                    </div>
+                    <span asp-validation-for="GiaBan" class="text-danger mt-1 d-block"></span>
+                </div>
+            </div>
+
+            <!-- Bổ sung tính năng Upload Ảnh -->
+            <div class="custom-input-group mt-2">
+                <label class="cyber-label"><i class='bx bx-images'></i> Bổ sung / Thay thế Hình ảnh</label>
+                <div class="cyber-upload-area">
+                    <i class='bx bx-cloud-upload upload-icon' id="upload-icon-status" style="font-size: 3rem; color: #00f2fe; margin-bottom: 10px;"></i>
+                    <h5 id="upload-text-status" style="color: #fff; font-weight: 700;">Kéo thả ảnh mới vào đây để cập nhật</h5>
+                    <p class="mb-0" style="color: rgba(255,255,255,0.5); font-size: 13px;">Bỏ trống nếu muốn giữ nguyên ảnh cũ của xe.</p>
+
+                    <input type="file" id="file-upload" name="files" multiple accept="image/*" />
+
+                    <div id="file-preview-container" class="mt-3"></div>
+                </div>
+            </div>
+
+            <!-- Công tắc Đã Bán -->
+            <div class="cyber-switch-wrapper">
+                <div class="form-check form-switch d-flex align-items-center">
+                    <input class="form-check-input custom-switch" type="checkbox" id="DaBanSwitch" name="DaBan" value="true" @(Model.DaBan == true ? "checked" : "")>
+                    <input type="hidden" name="DaBan" value="false" />
+                    <label class="form-check-label switch-label" for="DaBanSwitch">
+                        Xác nhận: Phương tiện ĐÃ BÀN GIAO cho khách
+                    </label>
+                </div>
+            </div>
+
+            <div class="action-footer">
+                <a asp-action="Index" class="btn-back-glass">
+                    <i class='bx bx-arrow-back'></i> Hủy Bỏ
+                </a>
+                <button type="submit" class="btn-submit-cyan">
+                    <i class='bx bx-check-double'></i> ĐỒNG BỘ DỮ LIỆU
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -144,4 +402,33 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <!-- Giữ nguyên JS báo tên File mượt mà -->
+    <script>
+        $(document).ready(function () {
+            $('#file-upload').on('change', function () {
+                var files = $(this)[0].files;
+                var previewContainer = $('#file-preview-container');
+                var textStatus = $('#upload-text-status');
+                var iconStatus = $('#upload-icon-status');
+
+                previewContainer.empty();
+
+                if (files.length > 0) {
+                    textStatus.text('SẼ CẬP NHẬT ' + files.length + ' TỆP DỮ LIỆU MỚI');
+                    textStatus.css('color', '#00f2fe');
+                    iconStatus.removeClass('bx-cloud-upload').addClass('bx-check-double').css('color', 'var(--accent-color)');
+
+                    for (var i = 0; i < files.length; i++) {
+                        var fileName = files[i].name;
+                        previewContainer.append('<span class="file-tag"><i class="bx bx-image"></i> ' + fileName + '</span>');
+                    }
+                } else {
+                    textStatus.text('Kéo thả ảnh mới vào đây để cập nhật');
+                    textStatus.css('color', '#fff');
+                    iconStatus.removeClass('bx-check-double').addClass('bx-cloud-upload').css('color', '#00f2fe');
+                }
+            });
+        });
+    </script>
 }

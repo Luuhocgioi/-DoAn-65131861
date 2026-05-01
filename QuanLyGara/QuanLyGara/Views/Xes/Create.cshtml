@@ -1,44 +1,152 @@
 @model QuanLyGara.Models.Xe
 
 @{
-    ViewData["Title"] = "Nhập Xe Mới";
+    ViewData["Title"] = "Nhập Kho Xe Mới";
 }
-
+<link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
 <style>
     :root {
         --primary-color: #2b2d42;
         --accent-color: #ef233c;
-        --bg-color: #f4f6f9;
-        --text-color: #8d97ad;
+        --bg-color: #0f1115; /* Nền tối đồng bộ */
     }
 
-    .form-container {
-        background: #ffffff;
-        border-radius: 20px;
+    .car-creation-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 0;
+    }
+
+    /* Bảng điều khiển kính mờ (Glass Console) */
+    .glass-console {
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 24px;
         padding: 40px;
-        box-shadow: 0 10px 30px rgba(43, 45, 66, 0.05);
-        font-family: 'Segoe UI', sans-serif;
+        width: 100%;
+        max-width: 800px;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.5);
     }
 
-    /* Vùng thả ảnh cực xịn */
-    .upload-area {
-        border: 2px dashed rgba(43, 45, 66, 0.3);
-        border-radius: 16px;
-        padding: 40px 20px;
+    .console-header {
         text-align: center;
-        background: var(--bg-color);
+        margin-bottom: 40px;
+    }
+
+    .console-icon {
+        font-size: 3.5rem;
+        color: var(--accent-color);
+        margin-bottom: 10px;
+        filter: drop-shadow(0 0 15px rgba(239, 35, 60, 0.6));
+    }
+
+    .console-title {
+        font-size: 2rem;
+        font-weight: 900;
+        color: #fff;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin: 0;
+    }
+
+    .console-subtitle {
+        color: #8d97ad;
+        font-size: 0.95rem;
+        margin-top: 5px;
+    }
+
+    /* Các nhóm ô nhập liệu phong cách Cyber */
+    .custom-input-group {
+        margin-bottom: 25px;
+    }
+
+    .cyber-label {
+        color: #8d97ad;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .cyber-label i {
+            color: var(--accent-color);
+            font-size: 1.1rem;
+        }
+
+    .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 15px;
+        font-size: 1.3rem;
+        color: rgba(255, 255, 255, 0.4);
+        pointer-events: none;
+        transition: color 0.3s;
+    }
+
+    .glass-input {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 14px 15px 14px 45px;
+        color: #ffffff;
+        font-size: 1.1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+        .glass-input:focus {
+            outline: none;
+            background: rgba(0, 0, 0, 0.5);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(239, 35, 60, 0.2);
+        }
+
+            .glass-input:focus + .input-icon,
+            .input-wrapper:focus-within .input-icon {
+                color: var(--accent-color);
+            }
+
+    /* Đặc quyền ô Giá Niêm Yết */
+    .price-input {
+        font-size: 1.3rem !important;
+        font-weight: 800;
+        color: #00f2fe !important;
+        letter-spacing: 1px;
+    }
+
+    /* Vùng Upload Ảnh thiết kế như Máy Quét */
+    .cyber-upload-area {
+        border: 2px dashed rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+        padding: 30px 20px;
+        text-align: center;
+        background: rgba(0, 0, 0, 0.2);
         transition: all 0.3s;
         cursor: pointer;
         position: relative;
+        overflow: hidden;
     }
 
-        .upload-area:hover {
+        .cyber-upload-area:hover {
             border-color: var(--accent-color);
             background: rgba(239, 35, 60, 0.05);
+            box-shadow: 0 0 20px rgba(239, 35, 60, 0.1) inset;
         }
 
-        /* Đây chính là cái "lõi" để chọn ảnh bị ẩn đi cho đẹp */
-        .upload-area input[type="file"] {
+        .cyber-upload-area input[type="file"] {
             position: absolute;
             top: 0;
             left: 0;
@@ -46,92 +154,189 @@
             height: 100%;
             opacity: 0;
             cursor: pointer;
+            z-index: 10;
         }
 
     .upload-icon {
         font-size: 3rem;
-        color: var(--primary-color);
-        margin-bottom: 15px;
+        color: #00f2fe;
+        margin-bottom: 10px;
+        transition: transform 0.3s;
     }
 
-    .form-control-custom {
-        border: 1px solid #e2e8f0;
-        border-radius: 10px;
-        padding: 12px 20px;
-        background: #f8fafc;
-        transition: border-color 0.2s;
+    .cyber-upload-area:hover .upload-icon {
+        transform: translateY(-5px);
+        filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.5));
     }
 
-        .form-control-custom:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(239, 35, 60, 0.1);
-            outline: none;
+    /* Action Buttons */
+    .action-footer {
+        display: flex;
+        gap: 20px;
+        margin-top: 35px;
+        padding-top: 30px;
+        border-top: 1px dashed rgba(255,255,255,0.1);
+    }
+
+    .btn-back-glass {
+        flex: 1;
+        background: rgba(255,255,255,0.05);
+        color: #fff;
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 14px;
+        border-radius: 12px;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+        .btn-back-glass:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            transform: translateX(-3px);
         }
 
-    .form-label {
+    .btn-submit-neon {
+        flex: 2;
+        background: var(--accent-color);
+        color: #fff;
+        border: none;
+        padding: 14px;
+        border-radius: 12px;
+        font-weight: 800;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 8px 25px rgba(239, 35, 60, 0.4);
+        cursor: pointer;
+    }
+
+        .btn-submit-neon:hover {
+            background: #d90429;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(239, 35, 60, 0.6);
+        }
+    /* Style cho các thẻ tên file được tải lên */
+    .file-tag {
+        background: rgba(0, 242, 254, 0.1);
+        border: 1px solid rgba(0, 242, 254, 0.3);
+        color: #00f2fe;
+        padding: 5px 12px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        margin: 5px;
+        font-size: 0.85rem;
         font-weight: 600;
-        color: var(--primary-color);
-        margin-bottom: 8px;
+        animation: fadeIn 0.3s ease;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 </style>
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold" style="color: var(--primary-color);">THÊM HỒ SƠ XE</h2>
-    <a asp-action="Index" class="btn btn-outline-secondary" style="border-radius: 50px;">
-        <i class='bx bx-arrow-back'></i> Quay lại Kho Xe
-    </a>
-</div>
+<div class="car-creation-wrapper">
+    <div class="glass-console">
 
-<div class="row">
-    <div class="col-md-8 mx-auto">
-        <div class="form-container">
-            <form asp-action="Create" enctype="multipart/form-data">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="HangXe" class="form-label">Hãng Xe</label>
-                        <input asp-for="HangXe" class="form-control form-control-custom" placeholder="VD: Mercedes-Benz" required />
-                        <span asp-validation-for="HangXe" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="DongXe" class="form-label">Dòng Xe</label>
-                        <input asp-for="DongXe" class="form-control form-control-custom" placeholder="VD: S450 Luxury" required />
-                        <span asp-validation-for="DongXe" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="SoKhungSoMay" class="form-label">Số Khung / Số Máy</label>
-                        <input asp-for="SoKhungSoMay" class="form-control form-control-custom" placeholder="Nhập mã VIN..." required />
-                        <span asp-validation-for="SoKhungSoMay" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="GiaBan" class="form-label">Giá Niêm Yết (VNĐ)</label>
-                        <input asp-for="GiaBan" class="form-control form-control-custom" type="number" required />
-                        <span asp-validation-for="GiaBan" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="mb-4 mt-2">
-                    <label class="form-label">Album Ảnh Xe (Hỗ trợ tải nhiều ảnh)</label>
-                    <div class="upload-area">
-                        <i class='bx bx-cloud-upload upload-icon'></i>
-                        <h5 style="color: var(--primary-color);">Kéo thả ảnh hoặc click vào đây để chọn</h5>
-                        <p class="text-muted mb-0" style="font-size: 13px;">Hỗ trợ định dạng: JPG, PNG, WEBP (Tấm đầu tiên sẽ làm ảnh bìa)</p>
-
-                        <input type="file" name="files" multiple accept="image/*" />
-                    </div>
-                </div>
-
-                <div class="text-end mt-4">
-                    <button type="submit" class="btn" style="background: var(--accent-color); color: #fff; padding: 12px 35px; border-radius: 50px; font-weight: 700; box-shadow: 0 8px 20px rgba(239, 35, 60, 0.3);">
-                        <i class='bx bx-save'></i> LƯU HỒ SƠ XE
-                    </button>
-                </div>
-            </form>
+        <div class="console-header">
+            <i class='bx bxs-car-garage console-icon'></i>
+            <h2 class="console-title">NHẬP KHO XE MỚI</h2>
+            <p class="console-subtitle">Khởi tạo hồ sơ phương tiện & Dữ liệu hình ảnh</p>
         </div>
+
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3" style="font-size: 0.9rem;"></div>
+
+            <div class="row">
+                <!-- Hãng Xe -->
+                <div class="col-md-6 custom-input-group">
+                    <label asp-for="HangXe" class="cyber-label"><i class='bx bx-buildings'></i> Thương Hiệu</label>
+                    <div class="input-wrapper">
+                        <i class='bx bx-purchase-tag-alt input-icon'></i>
+                        <input asp-for="HangXe" class="glass-input" placeholder="VD: Mercedes-Benz" required />
+                    </div>
+                    <span asp-validation-for="HangXe" class="text-danger mt-1 d-block" style="font-size: 0.85rem;"></span>
+                </div>
+
+                <!-- Dòng Xe -->
+                <div class="col-md-6 custom-input-group">
+                    <label asp-for="DongXe" class="cyber-label"><i class='bx bx-car'></i> Dòng Xe</label>
+                    <div class="input-wrapper">
+                        <i class='bx bx-cube input-icon'></i>
+                        <input asp-for="DongXe" class="glass-input" placeholder="VD: S450 Luxury" required />
+                    </div>
+                    <span asp-validation-for="DongXe" class="text-danger mt-1 d-block" style="font-size: 0.85rem;"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Số Khung -->
+                <div class="col-md-6 custom-input-group">
+                    <label asp-for="SoKhungSoMay" class="cyber-label"><i class='bx bx-barcode-reader'></i> Số Khung / Mã VIN</label>
+                    <div class="input-wrapper">
+                        <i class='bx bx-hash input-icon'></i>
+                        <input asp-for="SoKhungSoMay" class="glass-input" placeholder="Nhập mã định danh..." required />
+                    </div>
+                    <span asp-validation-for="SoKhungSoMay" class="text-danger mt-1 d-block" style="font-size: 0.85rem;"></span>
+                </div>
+
+                <!-- Giá Bán -->
+                <div class="col-md-6 custom-input-group">
+                    <label asp-for="GiaBan" class="cyber-label"><i class='bx bx-money'></i> Giá Niêm Yết (VNĐ)</label>
+                    <div class="input-wrapper">
+                        <i class='bx bx-dollar-circle input-icon' style="color: #00f2fe;"></i>
+                        <input asp-for="GiaBan" class="glass-input price-input" type="number" placeholder="Nhập số tiền..." required />
+                    </div>
+                    <span asp-validation-for="GiaBan" class="text-danger mt-1 d-block" style="font-size: 0.85rem;"></span>
+                </div>
+            </div>
+
+            <!-- Upload Ảnh Cyberpunk -->
+            <!-- Upload Ảnh Cyberpunk -->
+            <div class="custom-input-group mt-2">
+                <label class="cyber-label"><i class='bx bx-images'></i> Dữ Liệu Hình Ảnh (Hỗ trợ đa phương tiện)</label>
+                <div class="cyber-upload-area">
+                    <i class='bx bx-cloud-upload upload-icon' id="upload-icon-status"></i>
+                    <h5 id="upload-text-status" style="color: #fff; font-weight: 700;">Kéo thả ảnh hoặc click để đồng bộ dữ liệu</h5>
+                    <p class="mb-0" style="color: rgba(255,255,255,0.5); font-size: 13px;">Hỗ trợ: JPG, PNG, WEBP (Tấm đầu tiên sẽ làm ảnh đại diện)</p>
+
+                    <input type="file" id="file-upload" name="files" multiple accept="image/*" />
+
+                    <!-- Vùng trống để JS bắn tên file vào đây -->
+                    <div id="file-preview-container" class="mt-3"></div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-footer">
+                <a asp-action="Index" class="btn-back-glass">
+                    <i class='bx bx-arrow-back'></i> Hủy Bỏ
+                </a>
+                <button type="submit" class="btn-submit-neon">
+                    <i class='bx bx-save'></i> GHI NHẬN HỒ SƠ XE
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -139,4 +344,37 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+        $(document).ready(function () {
+            // Lắng nghe sự kiện khi có file được chọn
+            $('#file-upload').on('change', function () {
+                var files = $(this)[0].files;
+                var previewContainer = $('#file-preview-container');
+                var textStatus = $('#upload-text-status');
+                var iconStatus = $('#upload-icon-status');
+
+                // Xóa danh sách cũ đi mỗi lần chọn lại
+                previewContainer.empty();
+
+                if (files.length > 0) {
+                    // Đổi text và icon báo hiệu thành công
+                    textStatus.text('ĐÃ ĐỒNG BỘ ' + files.length + ' TỆP DỮ LIỆU');
+                    textStatus.css('color', '#00f2fe');
+                    iconStatus.removeClass('bx-cloud-upload').addClass('bx-check-double').css('color', 'var(--accent-color)');
+
+                    // Lặp qua từng file và tạo thẻ Tag hiển thị tên
+                    for (var i = 0; i < files.length; i++) {
+                        var fileName = files[i].name;
+                        previewContainer.append('<span class="file-tag"><i class="bx bx-image"></i> ' + fileName + '</span>');
+                    }
+                } else {
+                    // Nếu người dùng ấn Hủy (không chọn file nữa) thì trả lại giao diện ban đầu
+                    textStatus.text('Kéo thả ảnh hoặc click để đồng bộ dữ liệu');
+                    textStatus.css('color', '#fff');
+                    iconStatus.removeClass('bx-check-double').addClass('bx-cloud-upload').css('color', '#00f2fe');
+                }
+            });
+        });
+    </script>
 }

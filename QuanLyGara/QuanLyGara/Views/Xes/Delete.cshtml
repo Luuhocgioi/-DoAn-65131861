@@ -1,88 +1,121 @@
 @model QuanLyGara.Models.Xe
 
 @{
-    ViewData["Title"] = "Xóa Hồ Sơ Xe";
+    ViewData["Title"] = "CẢNH BÁO: XÓA DỮ LIỆU XE";
 }
-
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
 
 <style>
     :root {
         --primary-color: #2b2d42;
         --accent-color: #ef233c;
-        --bg-color: #f4f6f9;
-        --text-color: #8d97ad;
-        --danger-color: #d90429; /* Đỏ cực đậm cho hành động Xóa */
+        --bg-color: #0f1115;
+        --danger-neon: #ff003c; /* Đỏ rực rỡ cảnh báo */
     }
 
-    .delete-container {
-        font-family: 'Outfit', sans-serif;
+    .cyber-delete-wrapper {
         display: flex;
         justify-content: center;
         align-items: center;
         padding: 40px 15px;
     }
 
-    /* Thẻ cảnh báo trung tâm */
-    .warning-card {
-        background: #ffffff;
+    /* Thẻ cảnh báo Kính mờ (Glass Danger Console) */
+    .glass-danger-card {
+        background: rgba(20, 10, 10, 0.6); /* Nền ám đỏ đen */
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 0, 60, 0.3);
         border-radius: 24px;
-        box-shadow: 0 15px 35px rgba(239, 35, 60, 0.08);
-        border: 1px solid rgba(239, 35, 60, 0.1);
+        box-shadow: 0 20px 50px rgba(255, 0, 60, 0.15);
         width: 100%;
         max-width: 550px;
         overflow: hidden;
         text-align: center;
+        position: relative;
+    }
+
+        /* Hiệu ứng viền chạy cảnh báo (Scanline) */
+        .glass-danger-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 0, 60, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: dangerSweep 3s infinite linear;
+            pointer-events: none;
+        }
+
+    /* Nhớ dùng @@ cho Razor nhé */
+    @@keyframes dangerSweep {
+        0% {
+            transform: rotate(45deg) translateY(-100%);
+        }
+
+        100% {
+            transform: rotate(45deg) translateY(100%);
+        }
     }
 
     .warning-header {
-        background: rgba(239, 35, 60, 0.05);
-        padding: 30px 20px 20px;
-        border-bottom: 2px dashed rgba(239, 35, 60, 0.2);
+        background: rgba(255, 0, 60, 0.1);
+        padding: 35px 20px 25px;
+        border-bottom: 2px dashed rgba(255, 0, 60, 0.3);
     }
 
-    /* Hiệu ứng nhịp đập (Pulse) cảnh báo */
+    /* Icon nhịp đập cảnh báo */
     .warning-icon {
-        font-size: 4rem;
-        color: var(--accent-color);
+        font-size: 4.5rem;
+        color: var(--danger-neon);
         margin-bottom: 10px;
-        animation: pulse 2s infinite;
+        filter: drop-shadow(0 0 15px rgba(255, 0, 60, 0.6));
+        animation: dangerPulse 1.5s infinite;
     }
 
-    /* Đã thêm @@ để Razor không bị nhầm lẫn */
-    @@keyframes pulse {
+    @@keyframes dangerPulse {
         0% {
             transform: scale(1);
+            filter: drop-shadow(0 0 15px rgba(255, 0, 60, 0.6));
         }
 
         50% {
-            transform: scale(1.1);
+            transform: scale(1.15);
+            filter: drop-shadow(0 0 30px rgba(255, 0, 60, 0.9));
         }
 
         100% {
             transform: scale(1);
+            filter: drop-shadow(0 0 15px rgba(255, 0, 60, 0.6));
         }
     }
 
     .warning-title {
-        color: var(--primary-color);
+        color: #fff;
         font-weight: 900;
         font-size: 1.8rem;
+        letter-spacing: 2px;
         margin-bottom: 5px;
+        text-shadow: 0 0 10px rgba(255, 0, 60, 0.5);
     }
 
     .warning-subtitle {
-        color: var(--accent-color);
+        color: var(--danger-neon);
         font-weight: 600;
         font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
 
-    /* Vùng hiển thị thông tin xe sắp bị xóa */
-    .car-preview {
+    /* Vùng hiển thị mục tiêu bị xóa (Target Preview) */
+    .target-preview {
         padding: 30px;
         display: flex;
         flex-direction: column;
         align-items: center;
+        position: relative;
+        z-index: 2;
     }
 
     .preview-img {
@@ -90,13 +123,14 @@
         height: 120px;
         object-fit: cover;
         border-radius: 12px;
-        box-shadow: 0 8px 20px rgba(43, 45, 66, 0.15);
-        margin-bottom: 20px;
-        border: 3px solid #fff;
+        box-shadow: 0 0 20px rgba(255, 0, 60, 0.2);
+        margin-bottom: 25px;
+        border: 2px solid rgba(255, 0, 60, 0.5);
     }
 
-    .car-info-box {
-        background: var(--bg-color);
+    .cyber-info-box {
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.05);
         border-radius: 16px;
         padding: 20px;
         width: 100%;
@@ -107,8 +141,8 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 10px 0;
-        border-bottom: 1px solid rgba(43, 45, 66, 0.05);
+        padding: 12px 0;
+        border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
     }
 
         .info-row:last-child {
@@ -116,32 +150,36 @@
         }
 
     .info-label {
-        color: var(--text-color);
-        font-weight: 500;
-        font-size: 0.95rem;
+        color: #8d97ad;
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
 
     .info-value {
-        color: var(--primary-color);
+        color: #fff;
         font-weight: 700;
-        font-size: 1rem;
+        font-size: 1.05rem;
     }
 
-    /* Nhóm nút hành động */
+    /* Nút hành động */
     .action-footer {
         padding: 10px 30px 30px;
         display: flex;
         gap: 15px;
+        position: relative;
+        z-index: 2;
     }
 
-    .btn-cancel {
+    .btn-cancel-glass {
         flex: 1;
-        background: var(--bg-color);
-        color: var(--primary-color);
-        border: none;
+        background: rgba(255, 255, 255, 0.05);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.1);
         padding: 14px;
         border-radius: 12px;
-        font-weight: 700;
+        font-weight: 600;
         text-decoration: none;
         transition: all 0.3s;
         display: flex;
@@ -150,75 +188,75 @@
         gap: 8px;
     }
 
-        .btn-cancel:hover {
-            background: #e2e8f0;
-            color: var(--primary-color);
+        .btn-cancel-glass:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-3px);
         }
 
-    .btn-confirm-delete {
+    .btn-purge-neon {
         flex: 1;
-        background: var(--accent-color);
+        background: var(--danger-neon);
         color: #fff;
         border: none;
         padding: 14px;
         border-radius: 12px;
-        font-weight: 700;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
         transition: all 0.3s;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 8px;
-        box-shadow: 0 8px 20px rgba(239, 35, 60, 0.3);
+        box-shadow: 0 8px 25px rgba(255, 0, 60, 0.4);
         cursor: pointer;
     }
 
-        .btn-confirm-delete:hover {
-            background: var(--danger-color);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 25px rgba(239, 35, 60, 0.4);
+        .btn-purge-neon:hover {
+            background: #cc0030;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 0, 60, 0.7);
         }
 </style>
 
-<div class="delete-container">
-    <div class="warning-card">
+<div class="cyber-delete-wrapper">
+    <div class="glass-danger-card">
+
         <div class="warning-header">
-            <i class='bx bx-error-circle warning-icon'></i>
-            <h2 class="warning-title">XÁC NHẬN XÓA</h2>
-            <p class="warning-subtitle">Hành động này không thể hoàn tác!</p>
+            <i class='bx bx-radio-circle-marked warning-icon'></i>
+            <h2 class="warning-title">XÁC NHẬN HỦY DỮ LIỆU</h2>
+            <p class="warning-subtitle">Hành động này không thể đảo ngược!</p>
         </div>
 
-        <div class="car-preview">
+        <div class="target-preview">
             @if (Model.HinhAnhXes != null && Model.HinhAnhXes.Any())
             {
-                // Đã Fix an toàn lỗi bool? == true
                 var anhChinh = Model.HinhAnhXes.FirstOrDefault(a => a.LaAnhChinh == true) ?? Model.HinhAnhXes.First();
                 <img src="@anhChinh.DuongDanAnh" class="preview-img" alt="@Model.DongXe" />
             }
             else
             {
-                <div class="preview-img d-flex align-items-center justify-content-center" style="background: var(--primary-color); color: #fff;">
-                    <i class='bx bx-image-alt' style="font-size: 3rem;"></i>
+                <div class="preview-img d-flex align-items-center justify-content-center" style="background: rgba(0,0,0,0.5);">
+                    <i class='bx bx-ghost' style="font-size: 4rem; color: rgba(255,255,255,0.2);"></i>
                 </div>
             }
 
-            <div class="car-info-box">
+            <div class="cyber-info-box">
+                <div class="info-row">
+                    <span class="info-label">Định danh mục tiêu</span>
+                    <span class="info-value" style="color: var(--danger-neon);">#@Model.Id</span>
+                </div>
                 <div class="info-row">
                     <span class="info-label">Thương hiệu</span>
-                    <span class="info-value text-uppercase" style="color: var(--accent-color);">@Model.HangXe</span>
+                    <span class="info-value text-uppercase">@Model.HangXe</span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">Dòng xe</span>
-                    <span class="info-value" style="font-size: 1.2rem;">@Model.DongXe</span>
+                    <span class="info-value" style="font-size: 1.2rem; color: #00f2fe;">@Model.DongXe</span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">Mã VIN (Số Khung)</span>
                     <span class="info-value" style="font-family: monospace;">@Model.SoKhungSoMay</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Trạng thái hiện tại</span>
-                    <span class="info-value">
-                        @(Model.DaBan == true ? "Đã bàn giao" : "Sẵn sàng")
-                    </span>
                 </div>
             </div>
         </div>
@@ -226,13 +264,14 @@
         <form asp-action="Delete" class="action-footer">
             <input type="hidden" asp-for="Id" />
 
-            <a asp-action="Index" class="btn-cancel">
-                <i class='bx bx-arrow-back'></i> Hủy & Quay lại
+            <a asp-action="Index" class="btn-cancel-glass">
+                <i class='bx bx-block'></i> Ngắt kết nối (Hủy)
             </a>
 
-            <button type="submit" class="btn-confirm-delete">
-                <i class='bx bxs-trash-alt'></i> Xóa Vĩnh Viễn
+            <button type="submit" class="btn-purge-neon">
+                <i class='bx bxs-skull'></i> XÓA VĨNH VIỄN
             </button>
         </form>
+
     </div>
 </div>
