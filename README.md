@@ -74,45 +74,6 @@ graph TD
 
 ---
 
-## 🗄️ CẤU TRÚC CƠ SỞ DỮ LIỆU (ERD)
-
-Cơ sở dữ liệu của ứng dụng gồm 4 bảng chính được chuẩn hóa tối ưu:
-
-```mermaid
-erDiagram
-    XE {
-        int Id PK
-        varchar SoKhungSoMay "Unique"
-        nvarchar HangXe
-        nvarchar DongXe
-        decimal GiaBan
-        bit DaBan
-    }
-    HINHANHXE {
-        int Id PK
-        int XeId FK
-        nvarchar DuongDanAnh
-        bit LaAnhChinh
-    }
-    NHANVIEN {
-        int Id PK
-        nvarchar HoTen
-        varchar SoDienThoai
-        nvarchar ChucVu
-    }
-    DONHANG {
-        int Id PK
-        datetime NgayLap
-        decimal GiaChot
-        int NhanVienId FK
-        int XeId FK "Unique"
-    }
-
-    XE ||--oI DONHANG : "được lập"
-    XE ||--o{ HINHANHXE : "sở hữu ảnh"
-    NHANVIEN ||--o{ DONHANG : "thực hiện chốt"
-```
-
 ---
 
 ## 🚀 HƯỚNG DẪN CÀI ĐẶT & CHẠY DỰ ÁN
@@ -155,6 +116,3 @@ Sau khi ứng dụng khởi chạy thành công, mở trình duyệt và truy c�
 
 ---
 
-## 📄 LICENSE
-
-Dự án này được cấp phép theo các điều khoản của giấy phép **MIT License**. Vui lòng tham khảo tệp LICENSE để biết thêm chi tiết.
