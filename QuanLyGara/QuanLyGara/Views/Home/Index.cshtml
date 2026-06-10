@@ -1,36 +1,753 @@
-﻿@{
-    ViewData["Title"] = "Trang Chủ";
+@model QuanLyGara.Models.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Bảng Điều Khiển";
 }
 
+<!-- Load Boxicons & Chart.js -->
+<link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
-    /* Bố cục Typography khổng lồ như Gravity Global */
-    .hero-section {
+    :root {
+        --accent-red: #ef233c;
+        --accent-solid-red: #d90429;
+        --neon-teal: #00f2fe;
+        --neon-gold: #ffd166;
+        --neon-purple: #8338ec;
+        --glass-card-bg: rgba(255, 255, 255, 0.01);
+        --glass-card-border: rgba(255, 255, 255, 0.04);
+        --glow-red: 0 0 25px rgba(239, 35, 60, 0.15);
+        --glow-teal: 0 0 25px rgba(0, 242, 254, 0.15);
+    }
+
+    .premium-dashboard {
+        font-family: 'Outfit', sans-serif;
+        padding-bottom: 60px;
+    }
+
+    /* Tiêu đề chéo thể thao */
+    .dashboard-hero-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 45px;
+        position: relative;
+    }
+
+    .header-text-group h1 {
+        font-size: 2.8rem;
+        font-weight: 950;
+        text-transform: uppercase;
+        letter-spacing: -1.5px;
+        margin: 0;
+        background: linear-gradient(135deg, #ffffff 0%, #8d97ad 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .header-text-group p {
+        color: #8d97ad;
+        font-size: 1.1rem;
+        margin: 8px 0 0 0;
+        font-weight: 300;
+        letter-spacing: 0.5px;
+    }
+
+    /* Hệ thống KPI Không đối xứng (Asymmetric KPI) */
+    .asymmetric-kpi-grid {
+        display: grid;
+        grid-template-columns: 1.6fr 1fr 1fr 1fr;
+        gap: 25px;
+        margin-bottom: 40px;
+    }
+
+    @@media (max-width: 1200px) {
+        .asymmetric-kpi-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .asymmetric-kpi-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Thẻ KPI cơ bản */
+    .glass-kpi-card {
+        background: var(--glass-card-bg);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-card-border);
+        border-radius: 24px;
+        padding: 30px;
+        position: relative;
+        overflow: hidden;
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        height: calc(100vh - 200px); /* Canh giữa màn hình */
-        max-width: 850px;
+        justify-content: space-between;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        min-height: 160px;
     }
 
-    .hero-title {
-        font-size: 5.5rem; /* Cỡ chữ siêu to */
+    /* Thẻ Doanh thu nổi bật (Màu gradient đặc quyền) */
+    .glass-kpi-card.highlighted {
+        background: linear-gradient(135deg, rgba(239, 35, 60, 0.08) 0%, rgba(8, 9, 13, 0.4) 100%);
+        border-color: rgba(239, 35, 60, 0.2);
+        box-shadow: var(--glow-red);
+    }
+
+    /* Đường line trang trí đậm chất thể thao */
+    .kpi-stripe {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 120px;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.015));
+        transform: skewX(-25deg) translateX(30px);
+        pointer-events: none;
+    }
+
+    .glass-kpi-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: var(--accent-red);
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .glass-kpi-card:hover::before {
+        opacity: 1;
+    }
+
+    .glass-kpi-card:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.03);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Thiết lập màu sắc riêng cho từng thẻ kpi */
+    .kpi-teal:hover { border-color: rgba(0, 242, 254, 0.3); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), var(--glow-teal); }
+    .kpi-teal::before { background: var(--neon-teal); }
+
+    .kpi-gold:hover { border-color: rgba(255, 209, 102, 0.3); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 209, 102, 0.1); }
+    .kpi-gold::before { background: var(--neon-gold); }
+
+    .kpi-purple:hover { border-color: rgba(131, 56, 236, 0.3); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 25px rgba(131, 56, 236, 0.1); }
+    .kpi-purple::before { background: var(--neon-purple); }
+
+    .kpi-title {
+        font-size: 0.8rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #8d97ad;
+        margin-bottom: 15px;
+    }
+
+    .kpi-value-group {
+        display: flex;
+        align-items: baseline;
+        gap: 5px;
+    }
+
+    .kpi-big-num {
+        font-size: 2.2rem;
+        font-weight: 900;
+        letter-spacing: -1px;
+        color: #ffffff;
+    }
+
+    .highlighted .kpi-big-num {
+        background: linear-gradient(90deg, #ffffff 0%, #ffcbd1 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .kpi-unit {
+        font-size: 1rem;
+        color: #8d97ad;
         font-weight: 500;
-        line-height: 1.1;
-        color: var(--accent-color); /* Chữ màu Đỏ thể thao */
-        margin-bottom: 25px;
-        letter-spacing: -2px;
     }
 
-    .hero-subtitle {
-        font-size: 1.25rem;
-        color: rgba(255, 255, 255, 0.8);
-        line-height: 1.6;
-        max-width: 650px;
-        font-weight: 300;
+    .kpi-footer-info {
+        font-size: 0.8rem;
+        color: #8d97ad;
+        margin-top: 15px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .kpi-icon-badge {
+        position: absolute;
+        top: 25px;
+        right: 25px;
+        width: 45px;
+        height: 45px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        color: #8d97ad;
+        transition: all 0.3s;
+    }
+
+    .glass-kpi-card:hover .kpi-icon-badge {
+        color: #ffffff;
+        background: var(--accent-red);
+        transform: rotate(-10deg) scale(1.1);
+        box-shadow: 0 5px 15px rgba(239, 35, 60, 0.4);
+    }
+
+    .kpi-teal:hover .kpi-icon-badge { background: var(--neon-teal); color: #000; box-shadow: 0 5px 15px rgba(0, 242, 254, 0.4); }
+    .kpi-gold:hover .kpi-icon-badge { background: var(--neon-gold); color: #000; box-shadow: 0 5px 15px rgba(255, 209, 102, 0.4); }
+    .kpi-purple:hover .kpi-icon-badge { background: var(--neon-purple); color: #fff; box-shadow: 0 5px 15px rgba(131, 56, 236, 0.4); }
+
+    /* Bố cục chính bất đối xứng */
+    .dashboard-main-grid {
+        display: grid;
+        grid-template-columns: 1.3fr 1fr;
+        gap: 30px;
+    }
+
+    @@media (max-width: 992px) {
+        .dashboard-main-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Hộp kính chứa đồ thị */
+    .glass-content-card {
+        background: var(--glass-card-bg);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 1px solid var(--glass-card-border);
+        border-radius: 28px;
+        padding: 35px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        transition: all 0.3s;
+        margin-bottom: 30px;
+    }
+
+    .glass-content-card:hover {
+        border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .card-headline {
+        font-size: 1.35rem;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        color: #ffffff;
+        margin: 0 0 30px 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-transform: uppercase;
+    }
+
+    .card-headline i {
+        color: var(--accent-red);
+        font-size: 1.5rem;
+    }
+
+    .chart-layout-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        gap: 30px;
+        min-height: 250px;
+    }
+
+    @@media (max-width: 576px) {
+        .chart-layout-box {
+            flex-direction: column;
+        }
+    }
+
+    /* Danh sách bảng hoạt động gần đây */
+    .activity-list {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .activity-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 20px;
+        background: rgba(255, 255, 255, 0.01);
+        border: 1px solid rgba(255, 255, 255, 0.02);
+        border-radius: 16px;
+        transition: all 0.3s;
+    }
+
+    .activity-item:hover {
+        background: rgba(255, 255, 255, 0.03);
+        transform: translateX(5px);
+        border-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .activity-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        background: rgba(239, 35, 60, 0.1);
+        border: 1px solid rgba(239, 35, 60, 0.15);
+        color: var(--accent-red);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 1.1rem;
+    }
+
+    .activity-item:nth-child(even) .activity-avatar {
+        background: rgba(0, 242, 254, 0.1);
+        border-color: rgba(0, 242, 254, 0.15);
+        color: var(--neon-teal);
+    }
+
+    .activity-meta {
+        flex-grow: 1;
+        padding-left: 15px;
+    }
+
+    .activity-text {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin: 0;
+    }
+
+    .activity-time {
+        font-size: 0.78rem;
+        color: #8d97ad;
+        margin-top: 3px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .activity-badge {
+        font-size: 0.95rem;
+        font-weight: 800;
+        color: var(--neon-teal);
+    }
+
+    /* Hệ thống menu tác vụ nhanh dạng CAPSULE */
+    .capsule-action-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .capsule-action-btn {
+        background: rgba(255, 255, 255, 0.01);
+        border: 1px solid rgba(255, 255, 255, 0.03);
+        border-radius: 20px;
+        padding: 20px 25px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #ffffff;
+        text-decoration: none;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .capsule-action-btn:hover {
+        background: linear-gradient(90deg, rgba(239, 35, 60, 0.05) 0%, transparent 100%);
+        border-color: rgba(239, 35, 60, 0.25);
+        transform: translateX(8px);
+        color: #ffffff;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .capsule-action-btn.btn-teal:hover {
+        background: linear-gradient(90deg, rgba(0, 242, 254, 0.05) 0%, transparent 100%);
+        border-color: rgba(0, 242, 254, 0.25);
+    }
+
+    .capsule-action-btn.btn-purple:hover {
+        background: linear-gradient(90deg, rgba(131, 56, 236, 0.05) 0%, transparent 100%);
+        border-color: rgba(131, 56, 236, 0.25);
+    }
+
+    .capsule-left {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .capsule-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        color: #8d97ad;
+        transition: all 0.3s;
+    }
+
+    .capsule-action-btn:hover .capsule-icon {
+        background: var(--accent-red);
+        color: #ffffff;
+        box-shadow: 0 5px 15px rgba(239, 35, 60, 0.4);
+    }
+
+    .capsule-action-btn.btn-teal:hover .capsule-icon {
+        background: var(--neon-teal);
+        color: #000;
+        box-shadow: 0 5px 15px rgba(0, 242, 254, 0.4);
+    }
+
+    .capsule-action-btn.btn-purple:hover .capsule-icon {
+        background: var(--neon-purple);
+        color: #fff;
+        box-shadow: 0 5px 15px rgba(131, 56, 236, 0.4);
+    }
+
+    .capsule-label h4 {
+        margin: 0;
+        font-size: 1.05rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
+
+    .capsule-label p {
+        margin: 4px 0 0 0;
+        font-size: 0.8rem;
+        color: #8d97ad;
+    }
+
+    .capsule-arrow {
+        font-size: 1.3rem;
+        color: rgba(255, 255, 255, 0.2);
+        transition: all 0.3s;
+    }
+
+    .capsule-action-btn:hover .capsule-arrow {
+        color: #ffffff;
+        transform: translateX(4px);
+    }
+
+    /* Widget trạng thái hệ thống */
+    .system-status-box {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 15px;
+    }
+
+    .status-line {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.85rem;
+        color: #8d97ad;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        padding-bottom: 8px;
+    }
+
+    .status-line span:last-child {
+        color: #ffffff;
+        font-weight: 700;
+    }
+
+    .status-indicator-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background: #10b981;
+        border-radius: 50%;
+        box-shadow: 0 0 8px #10b981;
+        margin-right: 5px;
     }
 </style>
 
-<div class="hero-section">
-    <h1 class="hero-title">Quản Lý Đột Phá.<br>Bứt Tốc Doanh Thu.</h1>
-    <p class="hero-subtitle">Là nền tảng quản lý Gara ô tô tối ưu nhất, AutoPro giúp các doanh nghiệp tinh anh khai phóng sức mạnh dữ liệu và sự sáng tạo để châm ngòi cho sự tăng trưởng.</p>
+<div class="premium-dashboard">
+    <!-- Tiêu đề -->
+    <div class="dashboard-hero-header">
+        <div class="header-text-group">
+            <h1>AutoPro Control</h1>
+            <p>Bảng chỉ huy hoạt động trưng bày & giao dịch Gara siêu cấp</p>
+        </div>
+    </div>
+
+    <!-- Hệ thống KPI Không Đối Xứng -->
+    <div class="asymmetric-kpi-grid">
+        <!-- Tổng Doanh Thu (Thẻ lớn nổi bật) -->
+        <div class="glass-kpi-card highlighted">
+            <div class="kpi-stripe"></div>
+            <div>
+                <span class="kpi-title">Doanh Thu Giao Dịch</span>
+                <div class="kpi-value-group mt-2">
+                    <span class="kpi-big-num">@Model.Revenue.ToString("N0")</span>
+                    <span class="kpi-unit">VNĐ</span>
+                </div>
+            </div>
+            <div class="kpi-footer-info">
+                <i class='bx bx-trending-up' style="color: var(--accent-red); font-size: 1.1rem;"></i>
+                <span>Tăng trưởng mạnh mẽ từ các đơn hàng chốt</span>
+            </div>
+            <div class="kpi-icon-badge">
+                <i class='bx bx-coin-stack'></i>
+            </div>
+        </div>
+
+        <!-- Sẵn Sàng Bán -->
+        <div class="glass-kpi-card kpi-teal">
+            <div class="kpi-stripe"></div>
+            <div>
+                <span class="kpi-title">Trưng Bày</span>
+                <div class="kpi-value-group mt-2">
+                    <span class="kpi-big-num">@Model.AvailableCars</span>
+                    <span class="kpi-unit">Xe</span>
+                </div>
+            </div>
+            <div class="kpi-footer-info">
+                <span class="status-indicator-dot"></span>
+                <span>Sẵn sàng bàn giao khách</span>
+            </div>
+            <div class="kpi-icon-badge">
+                <i class='bx bx-car'></i>
+            </div>
+        </div>
+
+        <!-- Đã Bàn Giao -->
+        <div class="glass-kpi-card kpi-gold">
+            <div class="kpi-stripe"></div>
+            <div>
+                <span class="kpi-title">Đã Xuất Kho</span>
+                <div class="kpi-value-group mt-2">
+                    <span class="kpi-big-num">@Model.SoldCars</span>
+                    <span class="kpi-unit">Xe</span>
+                </div>
+            </div>
+            <div class="kpi-footer-info">
+                <i class='bx bx-check-double' style="color: var(--neon-gold); font-size: 1.1rem;"></i>
+                <span>Giao dịch thành công</span>
+            </div>
+            <div class="kpi-icon-badge">
+                <i class='bx bx-key'></i>
+            </div>
+        </div>
+
+        <!-- Tổng Nhân Sự -->
+        <div class="glass-kpi-card kpi-purple">
+            <div class="kpi-stripe"></div>
+            <div>
+                <span class="kpi-title">Đội ngũ</span>
+                <div class="kpi-value-group mt-2">
+                    <span class="kpi-big-num">@Model.TotalStaff</span>
+                    <span class="kpi-unit">Nhân sự</span>
+                </div>
+            </div>
+            <div class="kpi-footer-info">
+                <i class='bx bxs-user-detail' style="color: var(--neon-purple); font-size: 1.1rem;"></i>
+                <span>Đội ngũ tư vấn tinh anh</span>
+            </div>
+            <div class="kpi-icon-badge">
+                <i class='bx bx-group'></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Layout chính bất đối xứng -->
+    <div class="dashboard-main-grid">
+        <!-- Bảng trái (Biểu đồ & Giao dịch mới nhất) -->
+        <div>
+            <!-- Đồ thị cơ cấu thương hiệu -->
+            <div class="glass-content-card">
+                <h3 class="card-headline"><i class='bx bx-pie-chart-alt-2'></i> Cơ Cấu Thương Hiệu</h3>
+                <div class="chart-layout-box">
+                    <div style="position: relative; max-height: 240px; max-width: 240px; width: 100%;">
+                        @if (Model.BrandData.Any())
+                        {
+                            <canvas id="brandChart" style="max-height: 240px; max-width: 240px;"></canvas>
+                        }
+                        else
+                        {
+                            <div style="color: #8d97ad; text-align: center; padding: 40px 0;">
+                                <i class='bx bx-data' style="font-size: 3rem; display: block; margin-bottom: 10px;"></i>
+                                Chưa có dữ liệu xe để hiển thị biểu đồ
+                            </div>
+                        }
+                    </div>
+                    <!-- Chú giải tùy chỉnh dạng cột neon -->
+                    <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 10px; padding-left: 20px;">
+                        @if (Model.BrandData.Any())
+                        {
+                            int index = 0;
+                            string[] colors = new string[] { "#ef233c", "#00f2fe", "#ffd166", "#06d6a0", "#8338ec", "#ff006e" };
+                            foreach (var brand in Model.BrandData.Take(5))
+                            {
+                                var color = colors[index % colors.Length];
+                                <div class="d-flex align-items-center justify-content-between" style="border-bottom: 1px solid rgba(255,255,255,0.02); padding-bottom: 5px;">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span style="display:inline-block; width:12px; height:12px; border-radius:3px; background: @color; box-shadow: 0 0 8px @color;"></span>
+                                        <span style="font-weight: 700; font-size: 0.95rem;">@brand.Key</span>
+                                    </div>
+                                    <span style="color: #8d97ad; font-size: 0.9rem;">@brand.Value xe</span>
+                                </div>
+                                index++;
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Giao dịch gần nhất -->
+            <div class="glass-content-card">
+                <h3 class="card-headline"><i class='bx bx-transfer-alt'></i> Nhật Ký Giao Dịch Gần Đây</h3>
+                <div class="activity-list">
+                    @if (Model.RecentOrders.Any())
+                    {
+                        foreach (var order in Model.RecentOrders)
+                        {
+                            var initial = !string.IsNullOrEmpty(order.NhanVien?.HoTen) ? order.NhanVien.HoTen.Substring(0, 1).ToUpper() : "A";
+                            <div class="activity-item">
+                                <div class="activity-avatar">
+                                    @initial
+                                </div>
+                                <div class="activity-meta">
+                                    <h4 class="activity-text">@order.NhanVien?.HoTen đã xuất xe @order.Xe?.HangXe @order.Xe?.DongXe</h4>
+                                    <span class="activity-time">
+                                        <i class='bx bx-time-five'></i> @order.NgayLap?.ToString("dd/MM/yyyy - HH:mm")
+                                    </span>
+                                </div>
+                                <div class="activity-badge">
+                                    +@order.GiaChot.ToString("N0") <span style="font-size:0.75rem; color:#8d97ad;">đ</span>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center py-4" style="color: #8d97ad;">
+                            <i class='bx bx-spreadsheet fs-1 mb-2 d-block'></i>
+                            Chưa ghi nhận giao dịch nào gần đây
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Bảng phải (Tác vụ & Trạng thái hệ thống) -->
+        <div>
+            <!-- Nhóm Tác vụ -->
+            <div class="glass-content-card">
+                <h3 class="card-headline"><i class='bx bx-bolt-circle'></i> Tác Vụ Khẩn Cấp</h3>
+                <div class="capsule-action-grid">
+                    <a asp-controller="Xes" asp-action="Create" class="capsule-action-btn btn-teal">
+                        <div class="capsule-left">
+                            <div class="capsule-icon">
+                                <i class='bx bx-plus-circle'></i>
+                            </div>
+                            <div class="capsule-label">
+                                <h4>Nhập Phương Tiện</h4>
+                                <p>Đăng ký và lưu trữ thông tin xe mới</p>
+                            </div>
+                        </div>
+                        <i class='bx bx-chevron-right capsule-arrow'></i>
+                    </a>
+
+                    <a asp-controller="DonHangs" asp-action="Create" class="capsule-action-btn">
+                        <div class="capsule-left">
+                            <div class="capsule-icon">
+                                <i class='bx bx-file-blank'></i>
+                            </div>
+                            <div class="capsule-label">
+                                <h4>Khởi Tạo Hợp Đồng</h4>
+                                <p>Lập đơn chốt và cập nhật kho xe</p>
+                            </div>
+                        </div>
+                        <i class='bx bx-chevron-right capsule-arrow'></i>
+                    </a>
+
+                    <a asp-controller="NhanViens" asp-action="Create" class="capsule-action-btn btn-purple">
+                        <div class="capsule-left">
+                            <div class="capsule-icon">
+                                <i class='bx bx-user-plus'></i>
+                            </div>
+                            <div class="capsule-label">
+                                <h4>Bổ Nhiệm Nhân Sự</h4>
+                                <p>Tuyển dụng và mở tài khoản mới</p>
+                            </div>
+                        </div>
+                        <i class='bx bx-chevron-right capsule-arrow'></i>
+                    </a>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
 </div>
+
+@if (Model.BrandData.Any())
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const ctx = document.getElementById('brandChart').getContext('2d');
+            const brandLabels = @Html.Raw(Json.Serialize(Model.BrandData.Keys));
+            const brandCounts = @Html.Raw(Json.Serialize(Model.BrandData.Values));
+
+            // Palette màu tối thể thao
+            const colors = [
+                '#ef233c', '#00f2fe', '#ffd166', '#06d6a0', '#8338ec', 
+                '#ff006e', '#3a86c8', '#ff6700', '#c5e90b'
+            ];
+
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: brandLabels,
+                    datasets: [{
+                        data: brandCounts,
+                        backgroundColor: colors.slice(0, brandLabels.length),
+                        borderColor: '#08090d',
+                        borderWidth: 3,
+                        hoverOffset: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false // Ẩn legend mặc định, sử dụng bảng chú giải neon tự thiết kế bên phải
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(8, 9, 13, 0.95)',
+                            titleFont: { family: 'Outfit', size: 12 },
+                            bodyFont: { family: 'Outfit', size: 12, weight: 'bold' },
+                            borderColor: 'rgba(255,255,255,0.08)',
+                            borderWidth: 1,
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    return ' ' + context.label + ': ' + context.raw + ' xe';
+                                }
+                            }
+                        }
+                    },
+                    cutout: '72%' // Vòng trong siêu mảnh tinh xảo
+                }
+            });
+        });
+    </script>
+}

@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QuanLyGara.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace QuanLyGara.Controllers
 {
+    [Authorize]
     public class DonHangsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -35,7 +37,7 @@ namespace QuanLyGara.Controllers
 
             var donHang = await _context.DonHangs
                 .Include(d => d.NhanVien)
-                .Include(d => d.Xe)
+                .Include(d => d.Xe).ThenInclude(x => x.HinhAnhXes)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (donHang == null)
             {
@@ -45,41 +47,55 @@ namespace QuanLyGara.Controllers
             return View(donHang);
         }
 
+        // Hàm bổ trợ nạp danh sách chọn cho Nhân viên và Xe
+        private void PopulateSelectLists(int? selectedNhanVienId = null, int? selectedXeId = null)
+        {
+            ViewData["NhanVienId"] = new SelectList(_context.NhanViens, "Id", "HoTen", selectedNhanVienId);
+
+            var availableCars = _context.Xes
+                .Where(x => x.DaBan != true || x.Id == selectedXeId)
+                .Select(x => new
+                {
+                    Id = x.Id,
+                    DisplayName = $"[{x.HangXe}] {x.DongXe} (VIN: {x.SoKhungSoMay}) - {x.GiaBan:N0} VNĐ"
+                });
+            ViewData["XeId"] = new SelectList(availableCars, "Id", "DisplayName", selectedXeId);
+        }
+
         // GET: DonHangs/Create
         public IActionResult Create()
         {
-            ViewData["NhanVienId"] = new SelectList(_context.NhanViens, "Id", "Id");
-            ViewData["XeId"] = new SelectList(_context.Xes, "Id", "Id");
+            PopulateSelectLists();
             return View();
         }
 
         // POST: DonHangs/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,NgayLap,GiaChot,NhanVienId,XeId")] DonHang donHang)
         {
-            // 1. TUYỆT CHIÊU: Bỏ qua kiểm tra khắt khe của ASP.NET đối với các đối tượng liên kết
+            // Bỏ qua kiểm tra ràng buộc đối với object liên kết
             ModelState.Remove("NhanVien");
             ModelState.Remove("Xe");
 
-            // 2. Tự động gán thời gian lúc bấm nút làm Ngày Lập Hóa Đơn
             donHang.NgayLap = DateTime.Now;
 
-            // 3. Kiểm tra lại, lúc này chắc chắn IsValid sẽ = true
             if (ModelState.IsValid)
             {
+                // Tự động cập nhật xe tương ứng thành đã bán
+                var xe = await _context.Xes.FindAsync(donHang.XeId);
+                if (xe != null)
+                {
+                    xe.DaBan = true;
+                }
+
                 _context.Add(donHang);
                 await _context.SaveChangesAsync();
 
-                // Lưu thành công -> Chuyển về trang danh sách
                 return RedirectToAction(nameof(Index));
             }
 
-            // Nếu vẫn lỗi (do chưa nhập đủ), nạp lại danh sách cho Select và ở lại trang
-            ViewData["NhanVienId"] = new SelectList(_context.NhanViens, "Id", "Id", donHang.NhanVienId);
-            ViewData["XeId"] = new SelectList(_context.Xes, "Id", "Id", donHang.XeId);
+            PopulateSelectLists(donHang.NhanVienId, donHang.XeId);
             return View(donHang);
         }
 
@@ -96,14 +112,11 @@ namespace QuanLyGara.Controllers
             {
                 return NotFound();
             }
-            ViewData["NhanVienId"] = new SelectList(_context.NhanViens, "Id", "Id", donHang.NhanVienId);
-            ViewData["XeId"] = new SelectList(_context.Xes, "Id", "Id", donHang.XeId);
+            PopulateSelectLists(donHang.NhanVienId, donHang.XeId);
             return View(donHang);
         }
 
         // POST: DonHangs/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,NgayLap,GiaChot,NhanVienId,XeId")] DonHang donHang)
@@ -113,10 +126,29 @@ namespace QuanLyGara.Controllers
                 return NotFound();
             }
 
+            ModelState.Remove("NhanVien");
+            ModelState.Remove("Xe");
+
             if (ModelState.IsValid)
             {
                 try
                 {
+                    // Xử lý đổi xe trong đơn hàng: hoàn lại trạng thái xe cũ và cập nhật xe mới
+                    var originalDonHang = await _context.DonHangs.AsNoTracking().FirstOrDefaultAsync(d => d.Id == donHang.Id);
+                    if (originalDonHang != null && originalDonHang.XeId != donHang.XeId)
+                    {
+                        var originalXe = await _context.Xes.FindAsync(originalDonHang.XeId);
+                        if (originalXe != null)
+                        {
+                            originalXe.DaBan = false;
+                        }
+                        var newXe = await _context.Xes.FindAsync(donHang.XeId);
+                        if (newXe != null)
+                        {
+                            newXe.DaBan = true;
+                        }
+                    }
+
                     _context.Update(donHang);
                     await _context.SaveChangesAsync();
                 }
@@ -133,8 +165,7 @@ namespace QuanLyGara.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["NhanVienId"] = new SelectList(_context.NhanViens, "Id", "Id", donHang.NhanVienId);
-            ViewData["XeId"] = new SelectList(_context.Xes, "Id", "Id", donHang.XeId);
+            PopulateSelectLists(donHang.NhanVienId, donHang.XeId);
             return View(donHang);
         }
 
@@ -148,7 +179,7 @@ namespace QuanLyGara.Controllers
 
             var donHang = await _context.DonHangs
                 .Include(d => d.NhanVien)
-                .Include(d => d.Xe)
+                .Include(d => d.Xe).ThenInclude(x => x.HinhAnhXes)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (donHang == null)
             {
@@ -166,10 +197,16 @@ namespace QuanLyGara.Controllers
             var donHang = await _context.DonHangs.FindAsync(id);
             if (donHang != null)
             {
-                _context.DonHangs.Remove(donHang);
-            }
+                // Hoàn lại trạng thái xe sang chưa bán
+                var xe = await _context.Xes.FindAsync(donHang.XeId);
+                if (xe != null)
+                {
+                    xe.DaBan = false;
+                }
 
-            await _context.SaveChangesAsync();
+                _context.DonHangs.Remove(donHang);
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Index));
         }
 

@@ -264,15 +264,15 @@
                         <div class="info-icon"><i class='bx bxs-user-badge'></i></div>
                         <div class="info-detail">
                             <span class="info-label">Nhân Viên Phụ Trách</span>
-                            <span class="info-value">Mã NV: @item.NhanVien?.Id</span>
+                            <span class="info-value">@item.NhanVien?.HoTen</span>
                         </div>
                     </div>
-
+ 
                     <div class="info-row">
                         <div class="info-icon"><i class='bx bxs-car'></i></div>
                         <div class="info-detail">
                             <span class="info-label">Phương Tiện Giao Dịch</span>
-                            <span class="info-value">Mã Xe: @item.Xe?.Id</span>
+                            <span class="info-value">@item.Xe?.HangXe @item.Xe?.DongXe</span>
                         </div>
                     </div>
                 </div>

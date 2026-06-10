@@ -1,39 +1,222 @@
 @model QuanLyGara.Models.NhanVien
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Sa Thải / Xóa Nhân Sự";
 }
 
-<h1>Delete</h1>
+<style>
+    :root {
+        --primary-color: #2b2d42;
+        --accent-color: #ef233c;
+        --bg-color: #0f1115;
+    }
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>NhanVien</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HoTen)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HoTen)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoDienThoai)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoDienThoai)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ChucVu)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ChucVu)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+    .delete-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 0;
+    }
+
+    .glass-console {
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 24px;
+        padding: 40px;
+        width: 100%;
+        max-width: 600px;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        text-align: center;
+    }
+
+    .warning-icon {
+        font-size: 4rem;
+        color: var(--accent-color);
+        margin-bottom: 20px;
+        filter: drop-shadow(0 0 15px rgba(239, 35, 60, 0.4));
+    }
+
+    .delete-title {
+        font-size: 1.8rem;
+        font-weight: 950;
+        color: #fff;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+    }
+
+    .delete-subtitle {
+        color: #8d97ad;
+        font-size: 0.95rem;
+        margin-bottom: 30px;
+    }
+
+    .profile-card-mini {
+        background: rgba(255, 255, 255, 0.01);
+        border: 1px solid rgba(255, 255, 255, 0.03);
+        border-radius: 16px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        text-align: left;
+        margin-bottom: 30px;
+    }
+
+    .profile-avatar-mini {
+        width: 65px;
+        height: 65px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent-color), transparent);
+        padding: 3px;
+    }
+
+    .profile-avatar-mini img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        background: var(--primary-color);
+    }
+
+    .profile-info-mini h4 {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 850;
+        color: #fff;
+    }
+
+    .profile-info-mini p {
+        margin: 4px 0 0 0;
+        color: #00f2fe;
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .danger-alert-box {
+        background: rgba(239, 35, 60, 0.08);
+        border-left: 4px solid var(--accent-color);
+        padding: 20px;
+        border-radius: 0 12px 12px 0;
+        text-align: left;
+        margin-bottom: 40px;
+    }
+
+    .danger-alert-title {
+        color: #ff4d6d;
+        font-weight: 700;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+    }
+
+    .danger-alert-text {
+        color: rgba(255,255,255,0.7);
+        font-size: 0.85rem;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    .action-footer {
+        display: flex;
+        gap: 20px;
+        border-top: 1px dashed rgba(255,255,255,0.1);
+        padding-top: 30px;
+    }
+
+    .btn-back-glass {
+        flex: 1;
+        background: rgba(255,255,255,0.05);
+        color: #fff;
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 14px;
+        border-radius: 12px;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .btn-back-glass:hover {
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+        transform: translateX(-3px);
+    }
+
+    .btn-delete-neon {
+        flex: 2;
+        background: var(--accent-color);
+        color: #fff;
+        border: none;
+        padding: 14px;
+        border-radius: 12px;
+        font-weight: 800;
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 8px 25px rgba(239, 35, 60, 0.4);
+        cursor: pointer;
+    }
+
+    .btn-delete-neon:hover {
+        background: #d90429;
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(239, 35, 60, 0.6);
+    }
+</style>
+
+<div class="delete-wrapper">
+    <div class="glass-console">
+        
+        <i class='bx bx-user-x warning-icon'></i>
+        <h2 class="delete-title">XÓA HỒ SƠ NHÂN SỰ</h2>
+        <p class="delete-subtitle">Xác nhận gỡ thông tin nhân viên khỏi hệ thống Gara</p>
+
+        <div class="profile-card-mini">
+            <div class="profile-avatar-mini">
+                <img src="https://ui-avatars.com/api/?name=@Model.HoTen&background=0f1115&color=ef233c&size=100&bold=true" alt="@Model.HoTen" />
+            </div>
+            <div class="profile-info-mini">
+                <h4>@Model.HoTen</h4>
+                <p>@Model.ChucVu (Mã NV: #@Model.Id)</p>
+            </div>
+        </div>
+
+        <div class="danger-alert-box">
+            <div class="danger-alert-title">
+                <i class='bx bxs-error-alt fs-5'></i> Cảnh báo sa thải / xóa hồ sơ
+            </div>
+            <p class="danger-alert-text">
+                Hành động này sẽ xóa vĩnh viễn hồ sơ của nhân sự **@Model.HoTen** ra khỏi danh sách hệ thống. Mọi đơn hàng/hợp đồng giao dịch do nhân viên này phụ trách sẽ bị mất liên kết trực tiếp.
+            </p>
+        </div>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <div class="action-footer">
+                <a asp-action="Index" class="btn-back-glass">
+                    <i class='bx bx-arrow-back'></i> Hủy Bỏ
+                </a>
+                <button type="submit" class="btn-delete-neon">
+                    <i class='bx bx-trash'></i> XÁC NHẬN XÓA HỒ SƠ
+                </button>
+            </div>
+        </form>
+
+    </div>
 </div>

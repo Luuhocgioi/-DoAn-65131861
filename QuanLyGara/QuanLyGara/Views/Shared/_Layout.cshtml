@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="utf-8" />
@@ -10,8 +10,11 @@
 
     <style>
             :root {
-                /* Vẫn giữ màu Đỏ Thể Thao ĐỘC QUYỀN của bạn làm điểm nhấn (thay cho màu xanh Gravity) */
                 --accent-color: #ef233c;
+                --accent-solid: #d90429;
+                --neon-teal: #00f2fe;
+                --bg-obsidian: #08090d;
+                --border-glow: rgba(239, 35, 60, 0.15);
             }
 
             body, html {
@@ -20,12 +23,19 @@
                 width: 100%;
                 min-height: 100vh;
                 font-family: 'Outfit', sans-serif;
-                background-color: #0f1115;
+                background-color: var(--bg-obsidian);
+                /* Tạo vân lưới carbon cơ khí thể thao */
+                background-image: 
+                    linear-gradient(45deg, rgba(255, 255, 255, 0.003) 25%, transparent 25%), 
+                    linear-gradient(-45deg, rgba(255, 255, 255, 0.003) 25%, transparent 25%), 
+                    linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.003) 75%), 
+                    linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.003) 75%);
+                background-size: 30px 30px;
                 color: #ffffff;
                 overflow-x: hidden;
             }
 
-            /* 1. LỚP HÌNH NỀN FULL MÀN HÌNH (Thay phi hành gia bằng Gara Siêu Xe) */
+            /* 1. LỚP HÌNH NỀN FULL MÀN HÌNH (Gara Siêu Xe Cinematic) */
             .bg-cinematic {
                 position: fixed;
                 top: 0;
@@ -35,9 +45,10 @@
                 z-index: -2;
                 background: url('https://images.unsplash.com/photo-1583121274602-3e2820c69888?q=80&w=2070&auto=format&fit=crop') no-repeat center center;
                 background-size: cover;
+                opacity: 0.45; /* Giảm độ sáng hình nền để nổi bật nội dung phía trước */
             }
 
-            /* 2. LỚP PHỦ ĐEN TRÁI-SANG-PHẢI (Giúp đọc được chữ) */
+            /* 2. LỚP PHỦ ĐEN TRÁI-SANG-PHẢI */
             .bg-overlay {
                 position: fixed;
                 top: 0;
@@ -45,83 +56,123 @@
                 width: 100vw;
                 height: 100vh;
                 z-index: -1;
-                background: linear-gradient(90deg, rgba(15,17,21,0.95) 0%, rgba(15,17,21,0.7) 45%, rgba(15,17,21,0.2) 100%);
+                background: radial-gradient(circle at 50% 50%, rgba(8, 9, 13, 0.6) 0%, rgba(8, 9, 13, 0.98) 100%);
             }
 
-            /* 3. THANH ĐIỀU HƯỚNG (NAVBAR) TRONG SUỐT NHƯ GRAVITY */
+            /* 3. THANH ĐIỀU HƯỚNG (NAVBAR) SIÊU MẢNH KÍNH MỜ */
             .gravity-nav {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                padding: 40px 80px;
+                padding: 30px 80px;
                 position: fixed;
                 top: 0;
                 left: 0;
                 width: 100%;
                 z-index: 1000;
-                transition: all 0.4s ease;
+                transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+                background: rgba(8, 9, 13, 0.3);
+                backdrop-filter: blur(10px);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.03);
             }
 
-                /* Khi cuộn chuột xuống, Navbar tự hiện nền đen mờ */
-                .gravity-nav.scrolled {
-                    background: rgba(15, 17, 21, 0.9);
-                    backdrop-filter: blur(15px);
-                    padding: 20px 80px;
-                    border-bottom: 1px solid rgba(255,255,255,0.05);
-                }
+            .gravity-nav.scrolled {
+                background: rgba(8, 9, 13, 0.92);
+                backdrop-filter: blur(20px);
+                padding: 15px 80px;
+                border-bottom: 1px solid rgba(239, 35, 60, 0.2);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            }
 
             .brand-logo {
-                font-size: 1.6rem;
+                font-size: 1.8rem;
                 font-weight: 900;
                 color: #fff;
                 text-decoration: none;
-                letter-spacing: -0.5px;
+                letter-spacing: -1px;
+                text-transform: uppercase;
+                background: linear-gradient(90deg, #ffffff, #8d97ad);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
             }
 
-                .brand-logo span {
-                    color: var(--accent-color);
-                }
+            .brand-logo span {
+                color: var(--accent-color);
+                -webkit-text-fill-color: var(--accent-color);
+                font-size: 2rem;
+            }
 
             .nav-links {
                 display: flex;
-                gap: 50px;
+                gap: 40px;
                 margin: 0;
                 padding: 0;
                 list-style: none;
             }
 
-                .nav-links a {
-                    color: rgba(255,255,255,0.7);
-                    text-decoration: none;
-                    font-size: 1rem;
-                    font-weight: 500;
-                    transition: color 0.3s;
-                }
-
-                    .nav-links a:hover, .nav-links a.active {
-                        color: #fff;
-                    }
-
-            /* Nút Contact bo tròn y hệt ảnh */
-            .btn-gravity {
-                background-color: var(--accent-color);
-                color: #fff !important;
-                padding: 12px 35px;
-                border-radius: 50px;
-                font-weight: 700;
-                font-size: 0.95rem;
+            .nav-links a {
+                color: rgba(255, 255, 255, 0.6);
                 text-decoration: none;
-                transition: transform 0.3s, box-shadow 0.3s;
+                font-size: 0.95rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                transition: all 0.3s;
+                position: relative;
+                padding: 5px 0;
             }
 
-                .btn-gravity:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 10px 25px rgba(239, 35, 60, 0.4);
-                }
+            .nav-links a::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 2px;
+                background: linear-gradient(90deg, var(--accent-color), var(--neon-teal));
+                transform: scaleX(0);
+                transform-origin: right;
+                transition: transform 0.3s ease;
+            }
+
+            .nav-links a:hover {
+                color: #ffffff;
+            }
+
+            .nav-links a:hover::after, .nav-links a.active::after {
+                transform: scaleX(1);
+                transform-origin: left;
+            }
+
+            .nav-links a.active {
+                color: #ffffff;
+            }
+
+            /* Nút Contact bo tròn */
+            .btn-gravity {
+                background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-solid) 100%);
+                color: #fff !important;
+                padding: 10px 30px;
+                border-radius: 50px;
+                font-weight: 800;
+                font-size: 0.9rem;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                text-decoration: none;
+                transition: all 0.3s;
+                box-shadow: 0 5px 15px rgba(239, 35, 60, 0.3);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .btn-gravity:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(239, 35, 60, 0.5), 0 0 10px rgba(0, 242, 254, 0.3);
+                border-color: rgba(0, 242, 254, 0.5);
+            }
 
             /* 4. VÙNG HIỂN THỊ NỘI DUNG */
             .content-wrapper {
-                padding-top: 160px; /* Đẩy nội dung xuống khỏi Navbar */
+                padding-top: 140px;
                 padding-left: 80px;
                 padding-right: 80px;
                 min-height: 100vh;
@@ -129,39 +180,46 @@
                 z-index: 1;
             }
 
-                /* Tinh chỉnh lại Table và Form cho phù hợp nền tối */
-                .content-wrapper table {
-                    background: rgba(255,255,255,0.03);
-                    color: #fff;
-                    border-radius: 16px;
-                    backdrop-filter: blur(10px);
-                }
+            /* Tinh chỉnh lại Table và Form cho phù hợp nền tối */
+            .content-wrapper table {
+                background: rgba(255, 255, 255, 0.01);
+                color: #fff;
+                border-radius: 20px;
+                backdrop-filter: blur(15px);
+                border: 1px solid rgba(255, 255, 255, 0.03);
+            }
 
-                .content-wrapper thead {
-                    background: rgba(0,0,0,0.4);
-                    color: var(--accent-color);
-                }
+            .content-wrapper thead {
+                background: rgba(239, 35, 60, 0.05);
+                color: var(--accent-color);
+            }
 
-                .content-wrapper td, .content-wrapper th {
-                    border-color: rgba(255,255,255,0.05);
-                }
+            .content-wrapper td, .content-wrapper th {
+                border-color: rgba(255, 255, 255, 0.03);
+                padding: 18px 20px;
+            }
 
             .form-container {
-                background: rgba(15,17,21,0.8);
-                backdrop-filter: blur(15px);
-                border: 1px solid rgba(255,255,255,0.05);
+                background: rgba(255, 255, 255, 0.01);
+                backdrop-filter: blur(25px);
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                border-radius: 24px;
             }
 
             .form-control-custom {
-                background: rgba(255,255,255,0.05);
+                background: rgba(0, 0, 0, 0.3);
                 color: #fff;
-                border-color: rgba(255,255,255,0.1);
+                border-color: rgba(255, 255, 255, 0.08);
+                border-radius: 12px;
+                padding: 12px;
             }
 
-                .form-control-custom:focus {
-                    background: rgba(255,255,255,0.1);
-                    color: #fff;
-                }
+            .form-control-custom:focus {
+                background: rgba(0, 0, 0, 0.5);
+                color: #fff;
+                border-color: var(--accent-color);
+                box-shadow: 0 0 10px rgba(239, 35, 60, 0.2);
+            }
     </style>
 </head>
 <body>
@@ -171,14 +229,26 @@
     <nav class="gravity-nav" id="mainNav">
         <a href="/" class="brand-logo">autopro<span>.</span></a>
 
-        <ul class="nav-links">
-            <li><a asp-controller="Home" asp-action="Index">Tổng Quan</a></li>
-            <li><a asp-controller="Xes" asp-action="Index">Kho Xe</a></li>
-            <li><a asp-controller="DonHangs" asp-action="Index">Giao Dịch</a></li>
-            <li><a asp-controller="NhanViens" asp-action="Index">Nhân Sự</a></li>
-        </ul>
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            <ul class="nav-links">
+                <li><a asp-controller="Home" asp-action="Index">Tổng Quan</a></li>
+                <li><a asp-controller="Xes" asp-action="Index">Kho Xe</a></li>
+                <li><a asp-controller="DonHangs" asp-action="Index">Giao Dịch</a></li>
+                <li><a asp-controller="NhanViens" asp-action="Index">Nhân Sự</a></li>
+            </ul>
 
-        <a href="#" class="btn-gravity">Đăng Xuất</a>
+            <div class="d-flex align-items-center gap-3">
+                <span class="text-white-50" style="font-size: 0.95rem;">
+                    <i class='bx bx-user-circle' style="vertical-align: middle; font-size: 1.2rem;"></i> @User.Identity.Name
+                </span>
+                <a asp-controller="Account" asp-action="Logout" class="btn-gravity">Đăng Xuất</a>
+            </div>
+        }
+        else
+        {
+            <a asp-controller="Account" asp-action="Login" class="btn-gravity">Đăng Nhập</a>
+        }
     </nav>
 
     <main class="content-wrapper">

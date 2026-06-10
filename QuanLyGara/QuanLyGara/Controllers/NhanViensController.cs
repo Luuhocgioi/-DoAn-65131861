@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QuanLyGara.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace QuanLyGara.Controllers
 {
+    [Authorize]
     public class NhanViensController : Controller
     {
         private readonly ApplicationDbContext _context;

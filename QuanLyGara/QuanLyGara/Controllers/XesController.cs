@@ -11,9 +11,11 @@ using QuanLyGara.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace QuanLyGara.Controllers
 {
+    [Authorize]
     public class XesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -27,11 +29,21 @@ namespace QuanLyGara.Controllers
         }
 
         // GET: Xes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
+            ViewData["CurrentFilter"] = searchString;
+
             // Lấy Xe kèm theo danh sách hình ảnh của nó
-            var quanLyGaraContext = _context.Xes.Include(x => x.HinhAnhXes);
-            return View(await quanLyGaraContext.ToListAsync());
+            var query = _context.Xes.Include(x => x.HinhAnhXes).AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                query = query.Where(x => x.HangXe.Contains(searchString) 
+                                      || x.DongXe.Contains(searchString) 
+                                      || x.SoKhungSoMay.Contains(searchString));
+            }
+
+            return View(await query.ToListAsync());
         }
 
         // GET: Xes/Details/5
@@ -134,6 +146,16 @@ namespace QuanLyGara.Controllers
             {
                 try
                 {
+                    // Nếu xe được chuyển sang trạng thái chưa bán (false hoặc null), xóa đơn hàng liên quan nếu có
+                    if (xe.DaBan != true)
+                    {
+                        var donHang = await _context.DonHangs.FirstOrDefaultAsync(d => d.XeId == xe.Id);
+                        if (donHang != null)
+                        {
+                            _context.DonHangs.Remove(donHang);
+                        }
+                    }
+
                     _context.Update(xe);
                     await _context.SaveChangesAsync();
                 }

@@ -1,36 +1,219 @@
 @model QuanLyGara.Models.NhanVien
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Chi Tiết Nhân Sự";
 }
 
-<h1>Details</h1>
+<style>
+    :root {
+        --primary-color: #2b2d42;
+        --accent-color: #ef233c;
+        --bg-color: #0f1115;
+    }
 
-<div>
-    <h4>NhanVien</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HoTen)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HoTen)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoDienThoai)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoDienThoai)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ChucVu)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ChucVu)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    .details-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 0;
+    }
+
+    .glass-console {
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 24px;
+        padding: 40px;
+        width: 100%;
+        max-width: 600px;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        text-align: center;
+    }
+
+    .avatar-large {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        margin: 0 auto 20px;
+        padding: 5px;
+        background: linear-gradient(135deg, var(--accent-color), transparent);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+    }
+
+    .avatar-large img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        background: var(--primary-color);
+    }
+
+    .profile-name {
+        font-size: 2rem;
+        font-weight: 900;
+        color: #fff;
+        margin-bottom: 5px;
+    }
+
+    .profile-role {
+        display: inline-block;
+        background: rgba(0, 242, 254, 0.1);
+        color: #00f2fe;
+        padding: 6px 20px;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 35px;
+        border: 1px solid rgba(0, 242, 254, 0.2);
+    }
+
+    .info-list {
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 40px;
+    }
+
+    .info-row {
+        display: flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.01);
+        border: 1px solid rgba(255, 255, 255, 0.03);
+        padding: 15px 20px;
+        border-radius: 14px;
+        gap: 15px;
+    }
+
+    .info-icon {
+        font-size: 1.5rem;
+        color: var(--accent-color);
+    }
+
+    .info-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .info-label {
+        font-size: 0.8rem;
+        color: #8d97ad;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .info-value {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #fff;
+        margin-top: 2px;
+    }
+
+    .action-footer {
+        display: flex;
+        gap: 20px;
+        border-top: 1px dashed rgba(255,255,255,0.1);
+        padding-top: 30px;
+    }
+
+    .btn-back-glass {
+        flex: 1;
+        background: rgba(255,255,255,0.05);
+        color: #fff;
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 14px;
+        border-radius: 12px;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .btn-back-glass:hover {
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+        transform: translateX(-3px);
+    }
+
+    .btn-edit-neon {
+        flex: 1;
+        background: var(--accent-color);
+        color: #fff;
+        border: none;
+        padding: 14px;
+        border-radius: 12px;
+        font-weight: 800;
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 8px 25px rgba(239, 35, 60, 0.4);
+        text-decoration: none;
+    }
+
+    .btn-edit-neon:hover {
+        background: #d90429;
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(239, 35, 60, 0.6);
+        color: #fff;
+    }
+</style>
+
+<div class="details-wrapper">
+    <div class="glass-console">
+        
+        <div class="avatar-large">
+            <img src="https://ui-avatars.com/api/?name=@Model.HoTen&background=0f1115&color=ef233c&size=150&bold=true" alt="@Model.HoTen" />
+        </div>
+
+        <h2 class="profile-name">@Model.HoTen</h2>
+        <span class="profile-role">@Model.ChucVu</span>
+
+        <div class="info-list">
+            <div class="info-row">
+                <i class='bx bx-id-card info-icon'></i>
+                <div class="info-content">
+                    <span class="info-label">Mã Số Nhân Viên</span>
+                    <span class="info-value">#@Model.Id</span>
+                </div>
+            </div>
+
+            <div class="info-row">
+                <i class='bx bx-phone-call info-icon'></i>
+                <div class="info-content">
+                    <span class="info-label">Số Điện Thoại</span>
+                    <span class="info-value">@Model.SoDienThoai</span>
+                </div>
+            </div>
+
+            <div class="info-row">
+                <i class='bx bx-briefcase-alt-2 info-icon'></i>
+                <div class="info-content">
+                    <span class="info-label">Bộ phận / Chức danh</span>
+                    <span class="info-value">@Model.ChucVu</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-footer">
+            <a asp-action="Index" class="btn-back-glass">
+                <i class='bx bx-arrow-back'></i> Quay lại
+            </a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-edit-neon">
+                <i class='bx bxs-edit-alt'></i> Chỉnh sửa
+            </a>
+        </div>
+
+    </div>
 </div>

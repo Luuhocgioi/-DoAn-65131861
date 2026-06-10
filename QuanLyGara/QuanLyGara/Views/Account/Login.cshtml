@@ -1,0 +1,181 @@
+@{
+    ViewData["Title"] = "Đăng Nhập";
+    var returnUrl = ViewData["ReturnUrl"] as string;
+}
+
+<style>
+    :root {
+        --primary-color: #2b2d42;
+        --accent-color: #ef233c;
+        --bg-color: #0f1115;
+    }
+
+    .login-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - 200px);
+    }
+
+    /* Bảng điều khiển kính mờ của khung đăng nhập */
+    .glass-login-box {
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 24px;
+        padding: 50px 40px;
+        width: 100%;
+        max-width: 450px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+        text-align: center;
+        transition: all 0.3s;
+    }
+
+    .login-logo {
+        font-size: 2.2rem;
+        font-weight: 900;
+        color: #fff;
+        letter-spacing: -1px;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+    }
+
+    .login-logo span {
+        color: var(--accent-color);
+    }
+
+    .login-subtitle {
+        color: #8d97ad;
+        font-size: 0.95rem;
+        margin-bottom: 40px;
+    }
+
+    /* Ô nhập liệu */
+    .input-group-custom {
+        margin-bottom: 25px;
+        text-align: left;
+    }
+
+    .input-label-custom {
+        color: #8d97ad;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .input-field-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .input-field-icon {
+        position: absolute;
+        left: 15px;
+        font-size: 1.3rem;
+        color: var(--accent-color);
+        pointer-events: none;
+    }
+
+    .glass-login-input {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 14px 15px 14px 45px;
+        color: #ffffff;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .glass-login-input:focus {
+        outline: none;
+        background: rgba(0, 0, 0, 0.5);
+        border-color: var(--accent-color);
+        box-shadow: 0 0 15px rgba(239, 35, 60, 0.25);
+    }
+
+    /* Nút Đăng nhập */
+    .btn-login-neon {
+        width: 100%;
+        background: var(--accent-color);
+        color: #fff;
+        border: none;
+        padding: 15px;
+        border-radius: 12px;
+        font-weight: 800;
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 8px 25px rgba(239, 35, 60, 0.4);
+        cursor: pointer;
+        margin-top: 15px;
+    }
+
+    .btn-login-neon:hover {
+        background: #d90429;
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(239, 35, 60, 0.6);
+    }
+
+    .alert-custom-danger {
+        background: rgba(239, 35, 60, 0.1);
+        border: 1px solid rgba(239, 35, 60, 0.2);
+        color: #ff4d6d;
+        padding: 12px;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        margin-bottom: 25px;
+        text-align: left;
+    }
+</style>
+
+<div class="login-wrapper">
+    <div class="glass-login-box">
+        <div class="login-logo">autopro<span>.</span></div>
+        <div class="login-subtitle">Hệ thống điều hành Gara siêu cấp</div>
+
+        <form asp-action="Login" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="returnUrl" value="@returnUrl" />
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert-custom-danger">
+                    <i class='bx bx-error-circle' style="vertical-align: middle; margin-right: 5px;"></i>
+                    @Html.ValidationSummary(true, "")
+                </div>
+            }
+
+            <div class="input-group-custom">
+                <label class="input-label-custom">Tên Đăng Nhập</label>
+                <div class="input-field-wrapper">
+                    <i class='bx bx-user input-field-icon'></i>
+                    <input type="text" name="username" class="glass-login-input" placeholder="Tên đăng nhập..." required autocomplete="off" />
+                </div>
+            </div>
+
+            <div class="input-group-custom">
+                <label class="input-label-custom">Mật Khẩu</label>
+                <div class="input-field-wrapper">
+                    <i class='bx bx-lock-alt input-field-icon'></i>
+                    <input type="password" name="password" class="glass-login-input" placeholder="Mật khẩu..." required />
+                </div>
+            </div>
+
+            <button type="submit" class="btn-login-neon">
+                <i class='bx bx-log-in-circle'></i> Đăng Nhập Hệ Thống
+            </button>
+        </form>
+    </div>
+</div>
