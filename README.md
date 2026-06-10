@@ -16,7 +16,7 @@
 * **Chuyên ngành:** Công nghệ thông tin
 * **Sinh viên thực hiện:** **Nguyễn Hoàng Lưu**
 * **Giảng viên hướng dẫn:** **ThS. Mai Cường Thọ**
-* **Đơn vị đào tạo:** Trường Trung cấp Kinh tế - Kỹ thuật Khánh Hòa
+* **Đơn vị đào tạo:** Trường Đại Học Nha Trang
 
 ---
 
